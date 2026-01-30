@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BV Corporate Banking | Inteligência de Mercado</title>
+
+  <!-- ajuda em cache agressivo (não é garantia, mas ajuda) -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- favicon inline pra não dar 404 -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='52'%3E%F0%9F%8F%A6%3C/text%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -26,7 +35,9 @@
       --bg-hover: #334155;
       --gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--gradient);
@@ -35,8 +46,10 @@
       line-height: 1.6;
       background-attachment: fixed;
     }
+
     .container { max-width: 1600px; margin: 0 auto; padding: 2rem; }
 
+    /* HEADER */
     .header {
       background: rgba(30, 41, 59, 0.8);
       backdrop-filter: blur(20px);
@@ -46,8 +59,21 @@
       margin-bottom: 2rem;
       animation: slideDown 0.6s ease-out;
     }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
     .header h1 {
       font-size: 2rem;
       font-weight: 800;
@@ -57,7 +83,14 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .header-badges { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+
+    .header-badges {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .run-label {
       display: inline-flex;
       align-items: center;
@@ -69,8 +102,10 @@
       font-size: 0.9rem;
       font-weight: 500;
     }
+
     .run-label.morning { border-color: var(--warning); color: var(--warning); }
     .run-label.night { border-color: var(--accent); color: var(--accent); }
+
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -81,29 +116,51 @@
       border-radius: 8px;
       font-size: 0.85rem;
     }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse-status 2s infinite; }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse-status 2s infinite;
+    }
     .status-dot.loading { background: var(--warning); }
     .status-dot.error { background: var(--danger); animation: none; }
+
     @keyframes pulse-status { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1rem;
       transition: all 0.3s ease;
-      cursor: pointer;
+      cursor: pointer; /* clickable */
       user-select: none;
-      position: relative;
-      overflow: hidden;
     }
-    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+    }
+
+    .stat-card.active {
+      outline: 2px solid rgba(59,130,246,0.6);
+      border-color: var(--accent);
+    }
+
     .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
     .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
     .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .stat-hint { font-size: 0.75rem; color: var(--text-muted); opacity: 0.85; }
 
+    /* CONTROLS */
     .controls {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -116,6 +173,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .btn {
       padding: 0.75rem 1.5rem;
       border: none;
@@ -130,54 +188,163 @@
       gap: 0.5rem;
       white-space: nowrap;
     }
+
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
-    .btn-secondary { background: var(--tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: white;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
     .btn-secondary:hover:not(:disabled) { background: var(--bg-hover); }
 
-    .filters { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+    /* FILTERS */
+    .filters {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: none;
+    }
+
     .filter-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500; }
+
     .filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .filter-chip { padding: 0.5rem 1rem; background: var(--tertiary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; user-select: none; }
+
+    .filter-chip {
+      padding: 0.5rem 1rem;
+      background: var(--tertiary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
     .filter-chip:hover { background: var(--bg-hover); border-color: var(--accent); }
     .filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
 
+    /* LOADING */
     .loading { display: none; text-align: center; padding: 4rem 2rem; }
     .loading.active { display: block; }
-    .spinner { width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1.5rem; }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .critical-alerts { background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05)); border: 2px solid var(--critical); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; animation: pulse-border 2s ease-in-out infinite; }
+    /* CRITICAL ALERTS */
+    .critical-alerts {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05));
+      border: 2px solid var(--critical);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: pulse-border 2s ease-in-out infinite;
+    }
     @keyframes pulse-border { 0%, 100% { border-color: var(--critical); } 50% { border-color: var(--danger); } }
-    .critical-title { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; color: var(--danger); margin-bottom: 1.5rem; }
+    .critical-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--danger);
+      margin-bottom: 1.5rem;
+    }
     .critical-icon { font-size: 2rem; animation: pulse 1.5s ease-in-out infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.1); } }
-    .alert-item { background: var(--bg-card); border: 1px solid var(--danger); border-left: 4px solid var(--critical); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; transition: all 0.3s ease; }
+    .alert-item {
+      background: var(--bg-card);
+      border: 1px solid var(--danger);
+      border-left: 4px solid var(--critical);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
     .alert-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
     .alert-item:last-child { margin-bottom: 0; }
     .alert-header { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
     .alert-body { color: var(--text-secondary); margin-bottom: 1rem; }
     .alert-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .action-tag { padding: 0.25rem 0.75rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent); border-radius: 6px; font-size: 0.8rem; color: var(--accent); }
+    .action-tag {
+      padding: 0.25rem 0.75rem;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--accent);
+    }
 
+    /* HEADLINES */
     .headlines-grid { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
-    .headline-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: all 0.3s ease; animation: fadeInUp 0.6s ease-out; }
+    .headline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
+    }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .headline-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); border-color: var(--accent); }
     .headline-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
     .headline-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; flex: 1; }
-    .priority-badge { padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+    .priority-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
     .priority-critical { background: var(--critical); color: white; animation: pulse 1.5s ease-in-out infinite; }
     .priority-high { background: var(--danger); color: white; }
     .priority-medium { background: var(--warning); color: var(--primary); }
     .priority-low { background: var(--tertiary); color: var(--text-secondary); }
-    .headline-resumo { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--accent); }
+
+    .headline-resumo {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--accent);
+    }
 
     .section { margin-top: 1.5rem; }
     .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
     .list { list-style: none; }
-    .list-item { padding: 0.75rem; background: var(--primary); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem; color: var(--text-secondary); transition: all 0.2s ease; }
+    .list-item {
+      padding: 0.75rem;
+      background: var(--primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
     .list-item:hover { background: var(--tertiary); border-color: var(--accent); transform: translateX(4px); }
     .list-item.opportunity { border-left: 3px solid var(--success); }
     .list-item.risk { border-left: 3px solid var(--danger); }
@@ -197,6 +364,7 @@
     .source-link { color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem; transition: all 0.2s ease; }
     .source-link:hover { color: #60a5fa; gap: 0.5rem; }
 
+    /* RADAR MACRO */
     .radar-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
     .radar-title { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
     .radar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
@@ -205,53 +373,14 @@
     .radar-list { list-style: none; }
     .radar-item { padding: 0.75rem; background: var(--secondary); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
 
+    /* OBS */
     .observacoes-section { background: var(--bg-card); border: 1px solid var(--warning); border-left: 4px solid var(--warning); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
     .observacoes-title { font-size: 1.1rem; font-weight: 600; color: var(--warning); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
     .observacoes-list { list-style: none; }
     .observacao-item { padding: 0.75rem; background: var(--primary); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
 
+    /* FOOTER */
     .footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
-
-    /* Painel de Fontes */
-    .sources-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .sources-panel-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-    }
-    .sources-panel-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
-    .sources-panel-list { display: grid; gap: 0.75rem; }
-    .source-row {
-      background: var(--primary);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.9rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      transition: 0.2s ease;
-    }
-    .source-row:hover { border-color: var(--accent); transform: translateY(-1px); }
-    .source-row-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .source-row-name { font-weight: 700; }
-    .source-row-meta { color: var(--text-muted); font-size: 0.85rem; }
-    .source-row-title { color: var(--text-secondary); }
-    .source-row a { width: fit-content; }
 
     @media (max-width: 768px) {
       .container { padding: 1rem; }
@@ -262,728 +391,686 @@
     }
 
     .hidden { display: none !important; }
+
+    /* mini label de versão */
+    .version {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.85;
+    }
   </style>
 </head>
 
 <body>
-<div class="container">
-  <!-- HEADER -->
-  <div class="header" id="top">
-    <div class="header-top">
-      <h1>🏦 BV Corporate Banking</h1>
-      <div class="header-badges">
-        <div class="status-badge">
-          <div class="status-dot" id="statusDot"></div>
-          <span id="statusText">Carregando...</span>
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-top">
+        <div>
+          <h1>🏦 BV Corporate Banking</h1>
+          <div class="version" id="frontendVersion"></div>
         </div>
-        <div class="run-label" id="runLabel">
-          <span id="runIcon">☀️</span>
-          <span id="runText">-</span>
+
+        <div class="header-badges">
+          <div class="status-badge">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Carregando...</span>
+          </div>
+          <div class="run-label" id="runLabel">
+            <span id="runIcon">☀️</span>
+            <span id="runText">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card" id="cardHeadlines" data-view="headlines">
+          <div class="stat-icon">📰</div>
+          <div class="stat-label">Headlines</div>
+          <div class="stat-value" id="statHeadlines">-</div>
+        </div>
+        <div class="stat-card" id="cardCritical" data-view="critical">
+          <div class="stat-icon">🚨</div>
+          <div class="stat-label">Alertas Críticos</div>
+          <div class="stat-value" id="statCritical">-</div>
+        </div>
+        <div class="stat-card" id="cardSources" data-view="headlines">
+          <div class="stat-icon">📊</div>
+          <div class="stat-label">Fontes</div>
+          <div class="stat-value" id="statSources">-</div>
+        </div>
+        <div class="stat-card" id="cardCategories" data-view="filters">
+          <div class="stat-icon">🏷️</div>
+          <div class="stat-label">Categorias</div>
+          <div class="stat-value" id="statCategories">-</div>
+        </div>
+        <div class="stat-card" id="cardTimestamp" data-view="all">
+          <div class="stat-icon">📅</div>
+          <div class="stat-label">Última Atualização</div>
+          <div class="stat-value" id="statTimestamp" style="font-size: 0.9rem;">-</div>
         </div>
       </div>
     </div>
 
-    <div class="stats-grid" id="statsGrid">
-      <div class="stat-card" id="statCardHeadlines" title="Clique para ir para Headlines">
-        <div class="stat-icon">📰</div>
-        <div class="stat-label">Headlines</div>
-        <div class="stat-value" id="statHeadlines">-</div>
-        <div class="stat-hint">clique para ver</div>
-      </div>
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="btn btn-primary" onclick="buscarRelatorio()" id="btnUpdate">🔄 Atualizar Agora</button>
+      <button class="btn btn-secondary" onclick="limparCache()">🗑️ Limpar Cache</button>
+    </div>
 
-      <div class="stat-card" id="statCardCritical" title="Clique para ver apenas Alertas Críticos">
-        <div class="stat-icon">🚨</div>
-        <div class="stat-label">Alertas Críticos</div>
-        <div class="stat-value" id="statCritical">-</div>
-        <div class="stat-hint">clique para filtrar</div>
-      </div>
-
-      <div class="stat-card" id="statCardSources" title="Clique para ver Fontes consolidadas">
-        <div class="stat-icon">📊</div>
-        <div class="stat-label">Fontes</div>
-        <div class="stat-value" id="statSources">-</div>
-        <div class="stat-hint">clique para abrir</div>
-      </div>
-
-      <div class="stat-card" id="statCardCategories" title="Clique para abrir/fechar filtros">
-        <div class="stat-icon">🏷️</div>
-        <div class="stat-label">Categorias</div>
-        <div class="stat-value" id="statCategories">-</div>
-        <div class="stat-hint">clique para filtros</div>
-      </div>
-
-      <div class="stat-card" id="statCardTimestamp" title="Clique para atualizar e voltar ao topo">
-        <div class="stat-icon">📅</div>
-        <div class="stat-label">Última Atualização</div>
-        <div class="stat-value" id="statTimestamp" style="font-size: 0.9rem;">-</div>
-        <div class="stat-hint">clique para atualizar</div>
+    <!-- FILTERS -->
+    <div class="filters" id="filtersSection">
+      <div class="filter-label">🔍 Filtrar por Categoria</div>
+      <div class="filter-chips" id="filterChips">
+        <div class="filter-chip active" data-filter="all">Todas</div>
+        <div class="filter-chip" data-filter="corporate_intel">🏢 Corporate Intel</div>
+        <div class="filter-chip" data-filter="credit_risk">💰 Crédito & Risco</div>
+        <div class="filter-chip" data-filter="agro">🌾 Agronegócio</div>
+        <div class="filter-chip" data-filter="fx">💵 Câmbio</div>
+        <div class="filter-chip" data-filter="macro">📊 Macro</div>
+        <div class="filter-chip" data-filter="sectors">🏭 Setores</div>
       </div>
     </div>
-  </div>
 
-  <!-- CONTROLS -->
-  <div class="controls">
-    <button class="btn btn-primary" onclick="buscarRelatorio()" id="btnUpdate">🔄 Atualizar Agora</button>
-    <button class="btn btn-secondary" onclick="limparCache()">🗑️ Limpar Cache</button>
-  </div>
-
-  <!-- FILTERS -->
-  <div class="filters" id="filtersSection" style="display:none;">
-    <div class="filter-label">🔍 Filtrar por Categoria / Modo de Visualização</div>
-    <div class="filter-chips" id="filterChips">
-      <div class="filter-chip active" data-filter="all">Todas</div>
-      <div class="filter-chip" data-filter="critical">🚨 Alertas</div>
-      <div class="filter-chip" data-filter="corporate_intel">🏢 Corporate Intel</div>
-      <div class="filter-chip" data-filter="credit_risk">💰 Crédito & Risco</div>
-      <div class="filter-chip" data-filter="agro">🌾 Agronegócio</div>
-      <div class="filter-chip" data-filter="fx">💵 Câmbio</div>
-      <div class="filter-chip" data-filter="macro">📊 Macro</div>
-      <div class="filter-chip" data-filter="sectors">🏭 Setores</div>
-      <div class="filter-chip" data-filter="other">🧩 Outros</div>
+    <!-- LOADING -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Buscando relatório atualizado...</p>
     </div>
-  </div>
 
-  <!-- LOADING -->
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Buscando relatório atualizado...</p>
-  </div>
-
-  <!-- FONTES (PAINEL CONSOLIDADO) -->
-  <div class="sources-panel hidden" id="sourcesPanel">
-    <div class="sources-panel-title">📰 Fontes consolidadas</div>
-    <div class="sources-panel-sub" id="sourcesPanelSub">Clique em uma fonte para abrir.</div>
-    <div class="sources-panel-list" id="sourcesPanelList"></div>
-  </div>
-
-  <!-- CRITICAL ALERTS -->
-  <div class="critical-alerts hidden" id="criticalAlerts">
-    <div class="critical-title">
-      <span class="critical-icon">🚨</span>
-      <span>Alertas Críticos - Ação Imediata</span>
+    <!-- CRITICAL ALERTS -->
+    <div class="critical-alerts hidden" id="criticalAlerts">
+      <div class="critical-title">
+        <span class="critical-icon">🚨</span>
+        <span>Alertas Críticos - Ação Imediata</span>
+      </div>
+      <div id="criticalAlertsContent"></div>
     </div>
-    <div id="criticalAlertsContent"></div>
+
+    <!-- HEADLINES -->
+    <div class="headlines-grid hidden" id="headlinesGrid"></div>
+
+    <!-- RADAR MACRO -->
+    <div class="radar-section hidden" id="radarSection">
+      <div class="radar-title">📡 Radar Macro</div>
+      <div class="radar-grid" id="radarGrid"></div>
+    </div>
+
+    <!-- OBSERVAÇÕES -->
+    <div class="observacoes-section hidden" id="observacoesSection"></div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <p>BV Corporate Banking | Inteligência de Mercado</p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+        Relatório gerado automaticamente | Atualizado 2x ao dia (9h e 17h)
+      </p>
+    </div>
+
   </div>
 
-  <!-- HEADLINES -->
-  <div class="headlines-grid hidden" id="headlinesGrid"></div>
-
-  <!-- RADAR MACRO -->
-  <div class="radar-section hidden" id="radarSection">
-    <div class="radar-title">📡 Radar Macro</div>
-    <div class="radar-grid" id="radarGrid"></div>
-  </div>
-
-  <!-- OBSERVAÇÕES -->
-  <div class="observacoes-section hidden" id="observacoesSection"></div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <p>BV Corporate Banking | Inteligência de Mercado</p>
-    <p style="margin-top: 0.5rem; font-size: 0.75rem;">
-      Relatório gerado automaticamente | Atualizado 2x ao dia (9h e 17h)
-    </p>
-  </div>
-</div>
-
-<script>
-  // ==================== CONFIGURAÇÃO ====================
-  const WEBHOOK_URL = 'https://primary-n8n.rzedd2.easypanel.host/webhook/news/latest';
-
-  const CONFIG = {
-    lastReportKey: 'bv_last_report',
-    updateInterval: 60000,
-    autoUpdate: true
-  };
-
-  let currentFilter = 'all';
-  let currentReport = null;
-
-  // ==================== INICIALIZAÇÃO ====================
-  window.addEventListener('DOMContentLoaded', () => {
-    carregarUltimoRelatorio();
-    inicializarFiltros();
-    inicializarStatsClicks();
-    buscarRelatorio();
-
-    if (CONFIG.autoUpdate) {
-      setInterval(verificarAtualizacao, CONFIG.updateInterval);
-    }
-  });
-
-  // ==================== FUNÇÕES PRINCIPAIS ====================
-  function carregarUltimoRelatorio() {
-    const saved = localStorage.getItem(CONFIG.lastReportKey);
-    if (saved) {
-      try {
-        const report = JSON.parse(saved);
-        currentReport = report;
-        renderizarRelatorio(report);
-        atualizarStatus('Cache carregado', 'success');
-      } catch (e) {
-        console.error('Erro ao carregar cache:', e);
-      }
-    }
-  }
-
-  async function buscarRelatorio() {
-    const btnUpdate = document.getElementById('btnUpdate');
-    const statusDot = document.getElementById('statusDot');
-
-    btnUpdate.disabled = true;
-    btnUpdate.textContent = '⏳ Atualizando...';
-    statusDot.classList.add('loading');
-    atualizarStatus('Buscando relatório...', 'loading');
-    document.getElementById('loading').classList.add('active');
-
-    try {
-      const url = `${WEBHOOK_URL}?ts=${Date.now()}`;
-      const response = await fetch(url, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-      const data = await response.json();
-      const report = Array.isArray(data) ? data[0] : data;
-
-      if (!report || typeof report !== 'object' || !report.generated_at) {
-        throw new Error('Relatório inválido (sem generated_at)');
-      }
-
-      console.log('🕒 generated_at recebido:', report.generated_at);
-
-      // Sempre sobrescreve cache (sem comparação)
-      localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
-      currentReport = report;
-
-      renderizarRelatorio(report);
-
-      atualizarStatus('Atualizado', 'success');
-      statusDot.classList.remove('loading', 'error');
-
-    } catch (error) {
-      console.error('Erro ao buscar relatório:', error);
-      atualizarStatus('Erro na atualização (usando cache)', 'error');
-
-      const statusDot = document.getElementById('statusDot');
-      statusDot.classList.remove('loading');
-      statusDot.classList.add('error');
-
-      carregarUltimoRelatorio();
-    } finally {
-      document.getElementById('loading').classList.remove('active');
-      btnUpdate.disabled = false;
-      btnUpdate.textContent = '🔄 Atualizar Agora';
-    }
-  }
-
-  function atualizarStatus(text, type) {
-    const statusText = document.getElementById('statusText');
-    statusText.textContent = text;
-  }
-
-  function verificarAtualizacao() {
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-
-    if ((hour === 9 && minute >= 5 && minute <= 10) ||
-        (hour === 17 && minute >= 5 && minute <= 10)) {
-
-      const lastUpdate = localStorage.getItem('lastAutoUpdate');
-      const lastTime = lastUpdate ? new Date(lastUpdate) : null;
-
-      if (!lastTime || (now - lastTime) > 10 * 60 * 1000) {
-        buscarRelatorio();
-        localStorage.setItem('lastAutoUpdate', now.toISOString());
-      }
-    }
-  }
-
-  // ==================== STATS CLICÁVEIS ====================
-  function inicializarStatsClicks() {
-    document.getElementById('statCardHeadlines').addEventListener('click', () => {
-      setFilter('all');
-      scrollToEl('headlinesGrid');
-    });
-
-    document.getElementById('statCardCritical').addEventListener('click', () => {
-      setFilter('critical');
-      scrollToEl('criticalAlerts');
-    });
-
-    document.getElementById('statCardSources').addEventListener('click', () => {
-      if (!currentReport) return;
-      renderizarPainelFontes(currentReport);
-      // Mostrar painel e ir até ele
-      document.getElementById('sourcesPanel').classList.remove('hidden');
-      scrollToEl('sourcesPanel');
-    });
-
-    document.getElementById('statCardCategories').addEventListener('click', () => {
-      const sec = document.getElementById('filtersSection');
-      const isHidden = (sec.style.display === 'none' || sec.style.display === '');
-      sec.style.display = isHidden ? 'block' : 'none';
-      if (isHidden) scrollToEl('filtersSection');
-    });
-
-    document.getElementById('statCardTimestamp').addEventListener('click', () => {
-      scrollToEl('top');
-      buscarRelatorio();
-    });
-  }
-
-  function scrollToEl(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  // ==================== RENDERIZAÇÃO ====================
-  function renderizarRelatorio(report) {
-    console.log('Renderizando relatório:', report);
-
-    atualizarHeader(report);
-    atualizarStats(report);
-
-    // Filtros visíveis após primeira render
-    document.getElementById('filtersSection').style.display = 'block';
-
-    // Painel de fontes (oculto por padrão)
-    document.getElementById('sourcesPanel').classList.add('hidden');
-    document.getElementById('sourcesPanelList').innerHTML = '';
-
-    // Alertas (render completo, filtro decide visibilidade)
-    const criticalHeadlines = detectarAlertas(report);
-    if (criticalHeadlines.length > 0) renderizarAlertas(criticalHeadlines);
-    else esconderAlertas();
-
-    // Headlines
-    renderizarHeadlines(report.top_headlines || []);
-
-    // Radar
-    if (report.radar_macro) renderizarRadarMacro(report.radar_macro);
-    else {
-      document.getElementById('radarSection').classList.add('hidden');
-      document.getElementById('radarGrid').innerHTML = '';
-    }
-
-    // Observações
-    if (report.observacoes && report.observacoes.length > 0) renderizarObservacoes(report.observacoes);
-    else {
-      document.getElementById('observacoesSection').classList.add('hidden');
-      document.getElementById('observacoesSection').innerHTML = '';
-    }
-
-    // Aplica o filtro atual (isso agora controla TUDO)
-    aplicarFiltro(currentFilter);
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function atualizarHeader(report) {
-    const runLabel = document.getElementById('runLabel');
-    const runIcon = document.getElementById('runIcon');
-    const runText = document.getElementById('runText');
-
-    if (report.run_label === 'morning') {
-      runLabel.className = 'run-label morning';
-      runIcon.textContent = '☀️';
-      runText.textContent = 'Morning Briefing';
-    } else {
-      runLabel.className = 'run-label night';
-      runIcon.textContent = '🌙';
-      runText.textContent = 'Evening Report';
-    }
-  }
-
-  function atualizarStats(report) {
-    const headlines = report.top_headlines || [];
-    const metadata = report.metadata || {};
-
-    document.getElementById('statHeadlines').textContent = headlines.length;
-    document.getElementById('statCritical').textContent = detectarAlertas(report).length;
-    document.getElementById('statSources').textContent = metadata.total_fontes || calcularFontes(headlines);
-    document.getElementById('statCategories').textContent = metadata.categorias_presentes?.length || detectarCategorias(headlines).size;
-
-    const timestamp = report.generated_at
-      ? new Date(report.generated_at).toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
-      : '-';
-
-    document.getElementById('statTimestamp').textContent = timestamp;
-  }
-
-  // ==================== ALERTAS / CATEGORIAS ====================
-  function detectarAlertas(report) {
-    const headlines = report.top_headlines || [];
-    return headlines.filter(h => {
-      const hasRisks = h.riscos_red_flags && h.riscos_red_flags.length > 0;
-      const tema = (h.tema || '').toLowerCase();
-      const critical = tema.includes('recuperação judicial') || tema.includes('default') || tema.includes('calote') || tema.includes(' rj');
-      return hasRisks || critical;
-    });
-  }
-
-  function detectarCategorias(headlines) {
-    const categorias = new Set();
-    headlines.forEach(h => {
-      const cat = detectarCategoriaHeadline(h);
-      if (cat) categorias.add(cat);
-    });
-    return categorias;
-  }
-
-  function detectarCategoriaHeadline(headline) {
-    const tema = (headline.tema || '').toLowerCase();
-    if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) return 'corporate_intel';
-    if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) return 'credit_risk';
-    if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) return 'agro';
-    if (tema.includes('câmbio') || tema.includes('dólar')) return 'fx';
-    if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) return 'macro';
-    if (tema.includes('energia') || tema.includes('infraestrutura') || tema.includes('varejo')) return 'sectors';
-    return 'other';
-  }
-
-  function calcularFontes(headlines) {
-    let total = 0;
-    headlines.forEach(h => {
-      if (h.fontes && Array.isArray(h.fontes)) total += h.fontes.length;
-    });
-    return total;
-  }
-
-  function renderizarAlertas(criticalHeadlines) {
-    const container = document.getElementById('criticalAlertsContent');
-    const section = document.getElementById('criticalAlerts');
-
-    let html = '';
-    criticalHeadlines.forEach(headline => {
-      const cat = detectarCategoriaHeadline(headline);
-      html += `
-        <div class="alert-item" data-category="${cat}">
-          <div class="alert-header">${headline.tema}</div>
-          <div class="alert-body">${headline.resumo}</div>
-          ${headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0 ? `
-            <div class="alert-actions">
-              ${headline.oportunidades_para_banker.map(op => `<span class="action-tag">💡 ${op}</span>`).join('')}
-            </div>
-          ` : ''}
-        </div>
-      `;
-    });
-
-    container.innerHTML = html;
-    section.classList.remove('hidden');
-  }
-
-  function esconderAlertas() {
-    document.getElementById('criticalAlerts').classList.add('hidden');
-    document.getElementById('criticalAlertsContent').innerHTML = '';
-  }
-
-  // ==================== HEADLINES ====================
-  function renderizarHeadlines(headlines) {
-    const container = document.getElementById('headlinesGrid');
-    container.innerHTML = '';
-
-    headlines.forEach((headline, index) => {
-      const card = document.createElement('div');
-      card.className = 'headline-card';
-      card.dataset.index = index;
-      card.dataset.category = detectarCategoriaHeadline(headline);
-
-      let priorityClass = 'priority-low';
-      let priorityText = 'BAIXA';
-
-      if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
-        priorityClass = 'priority-critical';
-        priorityText = 'CRÍTICO';
-      } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 2) {
-        priorityClass = 'priority-high';
-        priorityText = 'ALTA';
-      } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
-        priorityClass = 'priority-medium';
-        priorityText = 'MÉDIA';
-      }
-
-      let html = `
-        <div class="headline-header">
-          <div class="headline-title">${headline.tema}</div>
-          <div class="priority-badge ${priorityClass}">${priorityText}</div>
-        </div>
-        <div class="headline-resumo">${headline.resumo}</div>
-      `;
-
-      if (headline.sensibilidade_macro) {
-        html += `
-          <div class="section">
-            <div class="section-title">📊 Sensibilidade Macro</div>
-            <div class="macro-grid">
-              <div class="macro-item"><div class="macro-label">Inflação</div><div class="macro-value">${headline.sensibilidade_macro.inflacao}</div></div>
-              <div class="macro-item"><div class="macro-label">Juros</div><div class="macro-value">${headline.sensibilidade_macro.juros}</div></div>
-              <div class="macro-item"><div class="macro-label">Câmbio</div><div class="macro-value">${headline.sensibilidade_macro.cambio}</div></div>
-              <div class="macro-item"><div class="macro-label">Atividade</div><div class="macro-value">${headline.sensibilidade_macro.atividade}</div></div>
-              <div class="macro-item"><div class="macro-label">Crédito/Spreads</div><div class="macro-value">${headline.sensibilidade_macro.credito_spreads}</div></div>
-            </div>
-          </div>
-        `;
-      }
-
-      if (headline.setores_mais_afetados && headline.setores_mais_afetados.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-title">🏭 Setores Mais Afetados</div>
-            <ul class="list">
-              ${headline.setores_mais_afetados.map(setor => `<li class="list-item">${setor}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-
-      if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-title">💡 Oportunidades para Banker</div>
-            <ul class="list">
-              ${headline.oportunidades_para_banker.map(op => `<li class="list-item opportunity">${op}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-
-      if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-title">⚠️ Riscos e Red Flags</div>
-            <ul class="list">
-              ${headline.riscos_red_flags.map(risco => `<li class="list-item risk">${risco}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-
-      if (headline.fontes && headline.fontes.length > 0) {
-        html += `
-          <div class="section">
-            <div class="section-title">📰 Fontes</div>
-            <div class="sources-grid">
-              ${headline.fontes.map(fonte => `
-                <div class="source-card">
-                  <div class="source-header">
-                    <span class="source-name">${fonte.fonte}</span>
-                    <span class="source-date">${fonte.data || 'N/A'}</span>
-                  </div>
-                  <div class="source-title">${fonte.titulo}</div>
-                  ${fonte.link && fonte.link !== 'não informado' ? `
-                    <a href="${fonte.link}" target="_blank" class="source-link">Ler notícia completa →</a>
-                  ` : ''}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      }
-
-      card.innerHTML = html;
-      container.appendChild(card);
-    });
-
-    container.classList.remove('hidden');
-  }
-
-  // ==================== RADAR / OBSERVAÇÕES ====================
-  function renderizarRadarMacro(radar) {
-    const container = document.getElementById('radarGrid');
-    const section = document.getElementById('radarSection');
-    container.innerHTML = '';
-
-    const categories = {
-      'commodities': '📦 Commodities',
-      'juros_politica_monetaria': '💰 Juros e Política Monetária',
-      'cambio_risco': '💱 Câmbio e Risco',
-      'atividade_setorial': '🏢 Atividade Setorial'
+  <script>
+    // ==================== CONFIGURAÇÃO ====================
+    const WEBHOOK_URL = 'https://primary-n8n.rzedd2.easypanel.host/webhook/news/latest';
+
+    // MUDE ESTE VALOR A CADA DEPLOY (pra você confirmar que o GitHub atualizou)
+    const FRONTEND_VERSION = '2026-01-30 v3.1';
+
+    const CONFIG = {
+      lastReportKey: 'bv_last_report',
+      updateInterval: 60000, // 1 minuto
+      autoUpdate: true
     };
 
-    let hasContent = false;
+    let currentFilter = 'all';
+    let currentReport = null;
 
-    Object.entries(categories).forEach(([key, title]) => {
-      if (radar[key] && radar[key].length > 0) {
-        hasContent = true;
-        const categoryDiv = document.createElement('div');
-        categoryDiv.className = 'radar-category';
-        categoryDiv.innerHTML = `
-          <div class="radar-category-title">${title}</div>
-          <ul class="radar-list">
-            ${radar[key].map(item => `<li class="radar-item">${item}</li>`).join('')}
-          </ul>
-        `;
-        container.appendChild(categoryDiv);
-      }
-    });
+    // "view" controla o que aparece: all | headlines | critical | radar | observacoes
+    let currentView = 'all';
 
-    if (hasContent) section.classList.remove('hidden');
-    else section.classList.add('hidden');
-  }
+    // ==================== INICIALIZAÇÃO ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('frontendVersion').textContent = `Versão: ${FRONTEND_VERSION}`;
 
-  function renderizarObservacoes(observacoes) {
-    const section = document.getElementById('observacoesSection');
-    section.innerHTML = `
-      <div class="observacoes-title">⚠️ Observações Metodológicas</div>
-      <ul class="observacoes-list">
-        ${observacoes.map(obs => `<li class="observacao-item">${obs}</li>`).join('')}
-      </ul>
-    `;
-    section.classList.remove('hidden');
-  }
+      carregarUltimoRelatorio();
+      inicializarFiltros();
+      inicializarCardsTopo();
 
-  // ==================== PAINEL DE FONTES (CONSOLIDADO) ====================
-  function renderizarPainelFontes(report) {
-    const panel = document.getElementById('sourcesPanel');
-    const list = document.getElementById('sourcesPanelList');
-    const sub = document.getElementById('sourcesPanelSub');
-
-    const headlines = report.top_headlines || [];
-    const fontes = [];
-
-    headlines.forEach((h, idx) => {
-      if (h.fontes && Array.isArray(h.fontes)) {
-        h.fontes.forEach(f => {
-          fontes.push({
-            fonte: f.fonte || 'Fonte',
-            data: f.data || 'N/A',
-            titulo: f.titulo || '(sem título)',
-            link: f.link || '',
-            category: detectarCategoriaHeadline(h),
-            fromTema: h.tema || `Headline ${idx + 1}`
-          });
-        });
-      }
-    });
-
-    // Dedup simples por (link || fonte+título)
-    const seen = new Set();
-    const dedup = [];
-    fontes.forEach(x => {
-      const key = (x.link && x.link !== 'não informado') ? x.link : `${x.fonte}__${x.titulo}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      dedup.push(x);
-    });
-
-    sub.textContent = `Total: ${dedup.length} fontes únicas (consolidadas de todas as headlines).`;
-
-    list.innerHTML = dedup.map(s => `
-      <div class="source-row">
-        <div class="source-row-top">
-          <div class="source-row-name">${escapeHtml(s.fonte)}</div>
-          <div class="source-row-meta">${escapeHtml(s.data)} • categoria: ${escapeHtml(s.category)}</div>
-        </div>
-        <div class="source-row-title">${escapeHtml(s.titulo)}</div>
-        <div class="source-row-meta">Relacionado a: ${escapeHtml(s.fromTema)}</div>
-        ${s.link && s.link !== 'não informado'
-          ? `<a class="source-link" href="${s.link}" target="_blank">Abrir link →</a>`
-          : `<div class="source-row-meta">Sem link disponível</div>`
-        }
-      </div>
-    `).join('');
-
-    panel.classList.remove('hidden');
-  }
-
-  function escapeHtml(str) {
-    return String(str ?? '')
-      .replaceAll('&','&amp;')
-      .replaceAll('<','&lt;')
-      .replaceAll('>','&gt;')
-      .replaceAll('"','&quot;')
-      .replaceAll("'","&#039;");
-  }
-
-  // ==================== FILTROS (AGORA FILTRA TUDO) ====================
-  function inicializarFiltros() {
-    const chips = document.querySelectorAll('.filter-chip');
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => setFilter(chip.dataset.filter));
-    });
-  }
-
-  function setFilter(filter) {
-    const chips = document.querySelectorAll('.filter-chip');
-    chips.forEach(c => c.classList.remove('active'));
-    const active = Array.from(chips).find(c => c.dataset.filter === filter);
-    if (active) active.classList.add('active');
-
-    currentFilter = filter;
-    aplicarFiltro(filter);
-  }
-
-  function aplicarFiltro(filter) {
-    // 1) Headlines
-    const cards = document.querySelectorAll('.headline-card');
-    cards.forEach(card => {
-      if (filter === 'all') card.style.display = 'block';
-      else if (filter === 'critical') {
-        // mostra só headlines "críticas"
-        const idx = Number(card.dataset.index);
-        const h = currentReport?.top_headlines?.[idx];
-        const isCritical = !!(h && ((h.riscos_red_flags && h.riscos_red_flags.length > 0) ||
-          (String(h.tema || '').toLowerCase().includes('recuperação judicial') ||
-           String(h.tema || '').toLowerCase().includes('default') ||
-           String(h.tema || '').toLowerCase().includes('calote') ||
-           String(h.tema || '').toLowerCase().includes(' rj'))));
-        card.style.display = isCritical ? 'block' : 'none';
-      } else {
-        card.style.display = (card.dataset.category === filter) ? 'block' : 'none';
-      }
-    });
-
-    // 2) Alertas Críticos (agora também filtram)
-    const alertSection = document.getElementById('criticalAlerts');
-    const alertItems = document.querySelectorAll('#criticalAlertsContent .alert-item');
-    let anyAlertVisible = false;
-
-    alertItems.forEach(item => {
-      if (filter === 'all' || filter === 'critical') {
-        item.style.display = 'block';
-        anyAlertVisible = true;
-      } else {
-        const cat = item.getAttribute('data-category');
-        const show = (cat === filter);
-        item.style.display = show ? 'block' : 'none';
-        if (show) anyAlertVisible = true;
-      }
-    });
-
-    // Se estiver em modo categoria e não tiver alerta daquela categoria, some seção
-    if (alertItems.length === 0) {
-      alertSection.classList.add('hidden');
-    } else {
-      if (filter === 'all') alertSection.classList.toggle('hidden', !anyAlertVisible);
-      else if (filter === 'critical') alertSection.classList.remove('hidden');
-      else alertSection.classList.toggle('hidden', !anyAlertVisible);
-    }
-
-    // 3) Radar + Observações: só aparecem em "all" (pra não confundir modo categoria)
-    const radar = document.getElementById('radarSection');
-    const obs = document.getElementById('observacoesSection');
-
-    if (filter === 'all') {
-      // mantém como estão (se têm conteúdo ou não)
-      // nada
-    } else {
-      radar.classList.add('hidden');
-      obs.classList.add('hidden');
-    }
-
-    // 4) Painel de fontes: sempre esconde quando troca filtro (pra não “poluir”)
-    document.getElementById('sourcesPanel').classList.add('hidden');
-  }
-
-  function limparCache() {
-    if (confirm('Deseja limpar o cache local? O relatório será recarregado do servidor.')) {
-      localStorage.removeItem(CONFIG.lastReportKey);
-      localStorage.removeItem('lastAutoUpdate');
+      // Buscar relatório automaticamente na primeira carga
       buscarRelatorio();
+
+      if (CONFIG.autoUpdate) {
+        setInterval(verificarAtualizacao, CONFIG.updateInterval);
+      }
+    });
+
+    // ==================== FUNÇÕES PRINCIPAIS ====================
+    function carregarUltimoRelatorio() {
+      const saved = localStorage.getItem(CONFIG.lastReportKey);
+      if (saved) {
+        try {
+          const report = JSON.parse(saved);
+          currentReport = report;
+          renderizarRelatorio(report);
+          atualizarStatus('Cache carregado', 'success');
+        } catch (e) {
+          console.error('Erro ao carregar cache:', e);
+        }
+      }
     }
-  }
-</script>
+
+    async function buscarRelatorio() {
+      const btnUpdate = document.getElementById('btnUpdate');
+      const statusDot = document.getElementById('statusDot');
+
+      btnUpdate.disabled = true;
+      btnUpdate.textContent = '⏳ Atualizando...';
+      statusDot.classList.add('loading');
+      atualizarStatus('Buscando relatório...', 'loading');
+      document.getElementById('loading').classList.add('active');
+
+      try {
+        // ✅ quebra cache agressivo (browser/CDN/proxy)
+        const url = `${WEBHOOK_URL}?ts=${Date.now()}`;
+        const response = await fetch(url, {
+          cache: 'no-store',
+          headers: {
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const report = Array.isArray(data) ? data[0] : data;
+
+        // validação mínima
+        if (!report || typeof report !== 'object' || !report.generated_at) {
+          throw new Error('Relatório inválido (sem generated_at)');
+        }
+
+        console.log('📅 generated_at recebido:', report.generated_at);
+
+        // ✅ SEMPRE sobrescreve cache (sem comparação)
+        localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
+
+        currentReport = report;
+        renderizarRelatorio(report);
+
+        atualizarStatus('Atualizado', 'success');
+        statusDot.classList.remove('loading', 'error');
+
+      } catch (error) {
+        console.error('Erro ao buscar relatório:', error);
+        atualizarStatus('Erro na atualização (usando cache)', 'error');
+        statusDot.classList.remove('loading');
+        statusDot.classList.add('error');
+
+        // fallback pro cache
+        carregarUltimoRelatorio();
+
+      } finally {
+        document.getElementById('loading').classList.remove('active');
+        btnUpdate.disabled = false;
+        btnUpdate.textContent = '🔄 Atualizar Agora';
+      }
+    }
+
+    function atualizarStatus(text, type) {
+      document.getElementById('statusText').textContent = text;
+    }
+
+    function verificarAtualizacao() {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      if ((hour === 9 && minute >= 5 && minute <= 10) ||
+          (hour === 17 && minute >= 5 && minute <= 10)) {
+
+        const lastUpdate = localStorage.getItem('lastAutoUpdate');
+        const lastTime = lastUpdate ? new Date(lastUpdate) : null;
+
+        if (!lastTime || (now - lastTime) > 10 * 60 * 1000) {
+          buscarRelatorio();
+          localStorage.setItem('lastAutoUpdate', now.toISOString());
+        }
+      }
+    }
+
+    // ==================== RENDERIZAÇÃO ====================
+    function renderizarRelatorio(report) {
+      console.log('Renderizando relatório:', report);
+
+      atualizarHeader(report);
+      atualizarStats(report);
+
+      // 1) críticos
+      const criticalHeadlines = detectarAlertas(report);
+      if (criticalHeadlines.length > 0) {
+        renderizarAlertas(criticalHeadlines);
+      } else {
+        esconderSecao('criticalAlerts');
+        document.getElementById('criticalAlertsContent').innerHTML = '';
+      }
+
+      // 2) headlines
+      renderizarHeadlines(report.top_headlines || []);
+
+      // 3) radar
+      if (report.radar_macro) {
+        renderizarRadarMacro(report.radar_macro);
+      } else {
+        esconderSecao('radarSection');
+        document.getElementById('radarGrid').innerHTML = '';
+      }
+
+      // 4) observações
+      if (report.observacoes && report.observacoes.length > 0) {
+        renderizarObservacoes(report.observacoes);
+      } else {
+        esconderSecao('observacoesSection');
+        document.getElementById('observacoesSection').innerHTML = '';
+      }
+
+      // mostra filtros
+      document.getElementById('filtersSection').style.display = 'block';
+
+      // aplica view e filtro
+      aplicarView(currentView);
+      aplicarFiltro(currentFilter, true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function atualizarHeader(report) {
+      const runLabel = document.getElementById('runLabel');
+      const runIcon = document.getElementById('runIcon');
+      const runText = document.getElementById('runText');
+
+      if (report.run_label === 'morning') {
+        runLabel.className = 'run-label morning';
+        runIcon.textContent = '☀️';
+        runText.textContent = 'Morning Briefing';
+      } else {
+        runLabel.className = 'run-label night';
+        runIcon.textContent = '🌙';
+        runText.textContent = 'Evening Report';
+      }
+    }
+
+    function atualizarStats(report) {
+      const headlines = report.top_headlines || [];
+      const metadata = report.metadata || {};
+
+      const criticalCount = detectarAlertas(report).length;
+
+      document.getElementById('statHeadlines').textContent = headlines.length;
+      document.getElementById('statCritical').textContent = criticalCount;
+      document.getElementById('statSources').textContent = metadata.total_fontes || calcularFontes(headlines);
+      document.getElementById('statCategories').textContent = metadata.categorias_presentes?.length || detectarCategorias(headlines).size;
+
+      const timestamp = report.generated_at
+        ? new Date(report.generated_at).toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
+        : '-';
+
+      document.getElementById('statTimestamp').textContent = timestamp;
+    }
+
+    function detectarAlertas(report) {
+      const headlines = report.top_headlines || [];
+      return headlines.filter(h => {
+        const hasRisks = h.riscos_red_flags && h.riscos_red_flags.length > 0;
+        const tema = (h.tema || '').toLowerCase();
+        const critical = tema.includes('recuperação judicial') || tema.includes('default') || tema.includes('calote') || tema.includes(' rj');
+        return hasRisks || critical;
+      });
+    }
+
+    function detectarCategorias(headlines) {
+      const categorias = new Set();
+      headlines.forEach(h => {
+        const tema = (h.tema || '').toLowerCase();
+        if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) categorias.add('corporate_intel');
+        if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) categorias.add('credit_risk');
+        if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) categorias.add('agro');
+        if (tema.includes('câmbio') || tema.includes('dólar')) categorias.add('fx');
+        if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) categorias.add('macro');
+      });
+      return categorias;
+    }
+
+    function calcularFontes(headlines) {
+      let total = 0;
+      headlines.forEach(h => {
+        if (h.fontes && Array.isArray(h.fontes)) total += h.fontes.length;
+      });
+      return total;
+    }
+
+    function renderizarAlertas(criticalHeadlines) {
+      const container = document.getElementById('criticalAlertsContent');
+      const section = document.getElementById('criticalAlerts');
+
+      let html = '';
+      criticalHeadlines.forEach(headline => {
+        const cat = detectarCategoriaHeadline(headline);
+        html += `
+          <div class="alert-item" data-category="${cat}">
+            <div class="alert-header">${headline.tema}</div>
+            <div class="alert-body">${headline.resumo}</div>
+            ${headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0 ? `
+              <div class="alert-actions">
+                ${headline.oportunidades_para_banker.map(op => `<span class="action-tag">💡 ${op}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      section.classList.remove('hidden');
+    }
+
+    function renderizarHeadlines(headlines) {
+      const container = document.getElementById('headlinesGrid');
+      container.innerHTML = '';
+
+      headlines.forEach((headline, index) => {
+        const card = document.createElement('div');
+        card.className = 'headline-card';
+        card.dataset.index = index;
+        card.dataset.category = detectarCategoriaHeadline(headline);
+
+        let priorityClass = 'priority-low';
+        let priorityText = 'BAIXA';
+
+        if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
+          priorityClass = 'priority-critical';
+          priorityText = 'CRÍTICO';
+        } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 2) {
+          priorityClass = 'priority-high';
+          priorityText = 'ALTA';
+        } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
+          priorityClass = 'priority-medium';
+          priorityText = 'MÉDIA';
+        }
+
+        let html = `
+          <div class="headline-header">
+            <div class="headline-title">${headline.tema}</div>
+            <div class="priority-badge ${priorityClass}">${priorityText}</div>
+          </div>
+          <div class="headline-resumo">${headline.resumo}</div>
+        `;
+
+        if (headline.sensibilidade_macro) {
+          html += `
+            <div class="section">
+              <div class="section-title">📊 Sensibilidade Macro</div>
+              <div class="macro-grid">
+                <div class="macro-item"><div class="macro-label">Inflação</div><div class="macro-value">${headline.sensibilidade_macro.inflacao}</div></div>
+                <div class="macro-item"><div class="macro-label">Juros</div><div class="macro-value">${headline.sensibilidade_macro.juros}</div></div>
+                <div class="macro-item"><div class="macro-label">Câmbio</div><div class="macro-value">${headline.sensibilidade_macro.cambio}</div></div>
+                <div class="macro-item"><div class="macro-label">Atividade</div><div class="macro-value">${headline.sensibilidade_macro.atividade}</div></div>
+                <div class="macro-item"><div class="macro-label">Crédito/Spreads</div><div class="macro-value">${headline.sensibilidade_macro.credito_spreads}</div></div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (headline.setores_mais_afetados && headline.setores_mais_afetados.length > 0) {
+          html += `
+            <div class="section">
+              <div class="section-title">🏭 Setores Mais Afetados</div>
+              <ul class="list">
+                ${headline.setores_mais_afetados.map(setor => `<li class="list-item">${setor}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
+          html += `
+            <div class="section">
+              <div class="section-title">💡 Oportunidades para Banker</div>
+              <ul class="list">
+                ${headline.oportunidades_para_banker.map(op => `<li class="list-item opportunity">${op}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
+          html += `
+            <div class="section">
+              <div class="section-title">⚠️ Riscos e Red Flags</div>
+              <ul class="list">
+                ${headline.riscos_red_flags.map(risco => `<li class="list-item risk">${risco}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+
+        if (headline.fontes && headline.fontes.length > 0) {
+          html += `
+            <div class="section">
+              <div class="section-title">📰 Fontes</div>
+              <div class="sources-grid">
+                ${headline.fontes.map(fonte => `
+                  <div class="source-card">
+                    <div class="source-header">
+                      <span class="source-name">${fonte.fonte}</span>
+                      <span class="source-date">${fonte.data || 'N/A'}</span>
+                    </div>
+                    <div class="source-title">${fonte.titulo}</div>
+                    ${fonte.link && fonte.link !== 'não informado' ? `
+                      <a href="${fonte.link}" target="_blank" class="source-link">Ler notícia completa →</a>
+                    ` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        card.innerHTML = html;
+        container.appendChild(card);
+      });
+
+      container.classList.remove('hidden');
+    }
+
+    function detectarCategoriaHeadline(headline) {
+      const tema = (headline.tema || '').toLowerCase();
+      if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) return 'corporate_intel';
+      if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) return 'credit_risk';
+      if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) return 'agro';
+      if (tema.includes('câmbio') || tema.includes('dólar')) return 'fx';
+      if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) return 'macro';
+      if (tema.includes('energia') || tema.includes('infraestrutura') || tema.includes('varejo')) return 'sectors';
+      return 'other';
+    }
+
+    function renderizarRadarMacro(radar) {
+      const container = document.getElementById('radarGrid');
+      const section = document.getElementById('radarSection');
+      container.innerHTML = '';
+
+      const categories = {
+        'commodities': '📦 Commodities',
+        'juros_politica_monetaria': '💰 Juros e Política Monetária',
+        'cambio_risco': '💱 Câmbio e Risco',
+        'atividade_setorial': '🏢 Atividade Setorial'
+      };
+
+      let hasContent = false;
+
+      Object.entries(categories).forEach(([key, title]) => {
+        if (radar[key] && radar[key].length > 0) {
+          hasContent = true;
+          const categoryDiv = document.createElement('div');
+          categoryDiv.className = 'radar-category';
+          categoryDiv.innerHTML = `
+            <div class="radar-category-title">${title}</div>
+            <ul class="radar-list">
+              ${radar[key].map(item => `<li class="radar-item">${item}</li>`).join('')}
+            </ul>
+          `;
+          container.appendChild(categoryDiv);
+        }
+      });
+
+      if (hasContent) section.classList.remove('hidden');
+    }
+
+    function renderizarObservacoes(observacoes) {
+      const section = document.getElementById('observacoesSection');
+      section.innerHTML = `
+        <div class="observacoes-title">⚠️ Observações Metodológicas</div>
+        <ul class="observacoes-list">
+          ${observacoes.map(obs => `<li class="observacao-item">${obs}</li>`).join('')}
+        </ul>
+      `;
+      section.classList.remove('hidden');
+    }
+
+    function esconderSecao(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    function mostrarSecao(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    // ==================== FILTROS ====================
+    function inicializarFiltros() {
+      const chips = document.querySelectorAll('.filter-chip');
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentFilter = chip.dataset.filter;
+          aplicarFiltro(currentFilter, false);
+        });
+      });
+    }
+
+    function aplicarFiltro(filter, isInitial) {
+      // filtra headline cards
+      const cards = document.querySelectorAll('.headline-card');
+      cards.forEach(card => {
+        if (filter === 'all') card.style.display = 'block';
+        else card.style.display = (card.dataset.category === filter) ? 'block' : 'none';
+      });
+
+      // filtra também alertas críticos (se existirem)
+      const alertSection = document.getElementById('criticalAlerts');
+      const alertItems = document.querySelectorAll('#criticalAlertsContent .alert-item');
+
+      if (alertItems.length > 0) {
+        let anyAlertVisible = false;
+
+        alertItems.forEach(item => {
+          const cat = item.dataset.category || 'other';
+          const show = (filter === 'all') ? true : (cat === filter);
+          item.style.display = show ? 'block' : 'none';
+          if (show) anyAlertVisible = true;
+        });
+
+        // se filtro != all e não tiver nenhum alerta na categoria, some com a seção inteira
+        if (filter !== 'all' && !anyAlertVisible) {
+          alertSection.classList.add('hidden');
+        } else {
+          // só mostra se a view permitir
+          if (currentView === 'all' || currentView === 'critical') {
+            alertSection.classList.remove('hidden');
+          }
+        }
+      }
+    }
+
+    // ==================== "ABAS" PELO TOPO (CARDS) ====================
+    function inicializarCardsTopo() {
+      const statCards = document.querySelectorAll('.stat-card');
+      statCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const view = card.dataset.view || 'all';
+          // toggle: se clicar na mesma view, volta para all
+          currentView = (currentView === view) ? 'all' : view;
+
+          statCards.forEach(c => c.classList.remove('active'));
+          if (currentView !== 'all') {
+            card.classList.add('active');
+          }
+
+          aplicarView(currentView);
+          aplicarFiltro(currentFilter, false);
+          rolarParaView(currentView);
+        });
+      });
+    }
+
+    function aplicarView(view) {
+      // por padrão esconde tudo, depois liga o que precisa
+      const showAll = (view === 'all');
+
+      // Headlines
+      if (showAll || view === 'headlines') mostrarSecao('headlinesGrid');
+      else esconderSecao('headlinesGrid');
+
+      // Critical
+      if (showAll || view === 'critical') mostrarSecao('criticalAlerts');
+      else esconderSecao('criticalAlerts');
+
+      // Radar
+      if (showAll || view === 'radar') mostrarSecao('radarSection');
+      else esconderSecao('radarSection');
+
+      // Observações
+      if (showAll || view === 'observacoes') mostrarSecao('observacoesSection');
+      else esconderSecao('observacoesSection');
+
+      // Filters: se clicar “Categorias” (view=filters), só rola pra filtros, mas mantém all
+      if (view === 'filters') {
+        // mantém tudo visível
+        mostrarSecao('headlinesGrid');
+        // critical/radar/obs continuam como estavam (all)
+        mostrarSecao('criticalAlerts');
+        mostrarSecao('radarSection');
+        mostrarSecao('observacoesSection');
+      }
+    }
+
+    function rolarParaView(view) {
+      const targets = {
+        headlines: 'headlinesGrid',
+        critical: 'criticalAlerts',
+        radar: 'radarSection',
+        observacoes: 'observacoesSection',
+        filters: 'filtersSection',
+        all: null
+      };
+      const id = targets[view];
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function limparCache() {
+      if (confirm('Deseja limpar o cache local? O relatório será recarregado do servidor.')) {
+        localStorage.removeItem(CONFIG.lastReportKey);
+        localStorage.removeItem('lastAutoUpdate');
+        buscarRelatorio();
+      }
+    }
+  </script>
 </body>
 </html>
