@@ -245,14 +245,20 @@
         </div>
 
         <!-- CONTROLS -->
-        <div class="controls">
-            <button class="btn btn-primary" onclick="buscarRelatorio()" id="btnUpdate">
-                🔄 Atualizar Agora
-            </button>
-            <button class="btn btn-secondary" onclick="limparCache()">
-                🗑️ Limpar Cache
-            </button>
-        </div>
+const data = await response.json();
+const report = Array.isArray(data) ? data[0] : data;
+
+if (!report || typeof report !== 'object' || !report.generated_at) {
+  throw new Error('Relatório inválido (sem generated_at)');
+}
+
+console.log('📅 generated_at recebido:', report.generated_at);
+
+// ✅ sempre sobrescreve cache (sem comparação)
+localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
+
+currentReport = report;
+renderizarRelatorio(report);
 
         <!-- FILTERS -->
         <div class="filters" id="filtersSection" style="display: none;">
