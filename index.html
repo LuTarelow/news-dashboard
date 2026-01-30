@@ -1,762 +1,744 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BV Corporate Banking | Inteligência de Mercado</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        /* (SEU CSS ORIGINAL INTACTO) */
-        :root {
-            --primary: #0f172a;
-            --secondary: #1e293b;
-            --tertiary: #334155;
-            --accent: #3b82f6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --critical: #dc2626;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border: #475569;
-            --bg-card: #1e293b;
-            --bg-hover: #334155;
-            --gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            background-attachment: fixed;
-        }
-        .container { max-width: 1600px; margin: 0 auto; padding: 2rem; }
-        .header {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            animation: slideDown 0.6s ease-out;
-        }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #3b82f6, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .header-badges { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
-        .run-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .run-label.morning { border-color: var(--warning); color: var(--warning); }
-        .run-label.night { border-color: var(--accent); color: var(--accent); }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse-status 2s infinite; }
-        .status-dot.loading { background: var(--warning); }
-        .status-dot.error { background: var(--danger); animation: none; }
-        @keyframes pulse-status { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
-        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; transition: all 0.3s ease; }
-        .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); }
-        .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
-        .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
-        .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .controls {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
-        .btn-secondary { background: var(--tertiary); color: var(--text-primary); border: 1px solid var(--border); }
-        .btn-secondary:hover:not(:disabled) { background: var(--bg-hover); }
-        .filters { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-        .filter-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500; }
-        .filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .filter-chip { padding: 0.5rem 1rem; background: var(--tertiary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; user-select: none; }
-        .filter-chip:hover { background: var(--bg-hover); border-color: var(--accent); }
-        .filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
-        .loading { display: none; text-align: center; padding: 4rem 2rem; }
-        .loading.active { display: block; }
-        .spinner { width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1.5rem; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .critical-alerts { background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05)); border: 2px solid var(--critical); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; animation: pulse-border 2s ease-in-out infinite; }
-        @keyframes pulse-border { 0%, 100% { border-color: var(--critical); } 50% { border-color: var(--danger); } }
-        .critical-title { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; color: var(--danger); margin-bottom: 1.5rem; }
-        .critical-icon { font-size: 2rem; animation: pulse 1.5s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.1); } }
-        .alert-item { background: var(--bg-card); border: 1px solid var(--danger); border-left: 4px solid var(--critical); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; transition: all 0.3s ease; }
-        .alert-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
-        .alert-item:last-child { margin-bottom: 0; }
-        .alert-header { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
-        .alert-body { color: var(--text-secondary); margin-bottom: 1rem; }
-        .alert-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .action-tag { padding: 0.25rem 0.75rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent); border-radius: 6px; font-size: 0.8rem; color: var(--accent); }
-        .headlines-grid { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
-        .headline-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: all 0.3s ease; animation: fadeInUp 0.6s ease-out; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .headline-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); border-color: var(--accent); }
-        .headline-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
-        .headline-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; flex: 1; }
-        .priority-badge { padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-        .priority-critical { background: var(--critical); color: white; animation: pulse 1.5s ease-in-out infinite; }
-        .priority-high { background: var(--danger); color: white; }
-        .priority-medium { background: var(--warning); color: var(--primary); }
-        .priority-low { background: var(--tertiary); color: var(--text-secondary); }
-        .headline-resumo { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--accent); }
-        .section { margin-top: 1.5rem; }
-        .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-        .list { list-style: none; }
-        .list-item { padding: 0.75rem; background: var(--primary); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem; color: var(--text-secondary); transition: all 0.2s ease; }
-        .list-item:hover { background: var(--tertiary); border-color: var(--accent); transform: translateX(4px); }
-        .list-item.opportunity { border-left: 3px solid var(--success); }
-        .list-item.risk { border-left: 3px solid var(--danger); }
-        .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .macro-item { background: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
-        .macro-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
-        .macro-value { color: var(--text-secondary); font-size: 0.9rem; }
-        .sources-grid { display: grid; gap: 1rem; margin-top: 1rem; }
-        .source-card { background: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; transition: all 0.3s ease; }
-        .source-card:hover { border-color: var(--accent); transform: translateX(4px); }
-        .source-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .source-name { font-weight: 600; color: var(--text-primary); }
-        .source-date { font-size: 0.85rem; color: var(--text-muted); }
-        .source-title { color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.95rem; }
-        .source-link { color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem; transition: all 0.2s ease; }
-        .source-link:hover { color: #60a5fa; gap: 0.5rem; }
-        .radar-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
-        .radar-title { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
-        .radar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .radar-category { background: var(--primary); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-        .radar-category-title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .radar-list { list-style: none; }
-        .radar-item { padding: 0.75rem; background: var(--secondary); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
-        .observacoes-section { background: var(--bg-card); border: 1px solid var(--warning); border-left: 4px solid var(--warning); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-        .observacoes-title { font-size: 1.1rem; font-weight: 600; color: var(--warning); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .observacoes-list { list-style: none; }
-        .observacao-item { padding: 0.75rem; background: var(--primary); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
-        .footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header h1 { font-size: 1.5rem; }
-            .stat-value { font-size: 1.25rem; }
-            .headline-title { font-size: 1.25rem; }
-            .controls { flex-direction: column; }
-        }
-        .hidden { display: none !important; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BV Corporate Banking | Inteligência de Mercado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e293b;
+      --tertiary: #334155;
+      --accent: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --critical: #dc2626;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #475569;
+      --bg-card: #1e293b;
+      --bg-hover: #334155;
+      --gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-attachment: fixed;
+    }
+    .container { max-width: 1600px; margin: 0 auto; padding: 2rem; }
+
+    .header {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: slideDown 0.6s ease-out;
+    }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header-badges { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .run-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .run-label.morning { border-color: var(--warning); color: var(--warning); }
+    .run-label.night { border-color: var(--accent); color: var(--accent); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse-status 2s infinite; }
+    .status-dot.loading { background: var(--warning); }
+    .status-dot.error { background: var(--danger); animation: none; }
+    @keyframes pulse-status { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; transition: all 0.3s ease; }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
+    .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    .controls {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+    .btn-secondary { background: var(--tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg-hover); }
+
+    .filters { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+    .filter-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; font-weight: 500; }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .filter-chip { padding: 0.5rem 1rem; background: var(--tertiary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; user-select: none; }
+    .filter-chip:hover { background: var(--bg-hover); border-color: var(--accent); }
+    .filter-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .loading { display: none; text-align: center; padding: 4rem 2rem; }
+    .loading.active { display: block; }
+    .spinner { width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1.5rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .critical-alerts { background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05)); border: 2px solid var(--critical); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; animation: pulse-border 2s ease-in-out infinite; }
+    @keyframes pulse-border { 0%, 100% { border-color: var(--critical); } 50% { border-color: var(--danger); } }
+    .critical-title { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; color: var(--danger); margin-bottom: 1.5rem; }
+    .critical-icon { font-size: 2rem; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.1); } }
+    .alert-item { background: var(--bg-card); border: 1px solid var(--danger); border-left: 4px solid var(--critical); border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; transition: all 0.3s ease; }
+    .alert-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2); }
+    .alert-item:last-child { margin-bottom: 0; }
+    .alert-header { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+    .alert-body { color: var(--text-secondary); margin-bottom: 1rem; }
+    .alert-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .action-tag { padding: 0.25rem 0.75rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent); border-radius: 6px; font-size: 0.8rem; color: var(--accent); }
+
+    .headlines-grid { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
+    .headline-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: all 0.3s ease; animation: fadeInUp 0.6s ease-out; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .headline-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); border-color: var(--accent); }
+    .headline-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+    .headline-title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; flex: 1; }
+    .priority-badge { padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+    .priority-critical { background: var(--critical); color: white; animation: pulse 1.5s ease-in-out infinite; }
+    .priority-high { background: var(--danger); color: white; }
+    .priority-medium { background: var(--warning); color: var(--primary); }
+    .priority-low { background: var(--tertiary); color: var(--text-secondary); }
+    .headline-resumo { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--accent); }
+    .section { margin-top: 1.5rem; }
+    .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .list { list-style: none; }
+    .list-item { padding: 0.75rem; background: var(--primary); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem; color: var(--text-secondary); transition: all 0.2s ease; }
+    .list-item:hover { background: var(--tertiary); border-color: var(--accent); transform: translateX(4px); }
+    .list-item.opportunity { border-left: 3px solid var(--success); }
+    .list-item.risk { border-left: 3px solid var(--danger); }
+    .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .macro-item { background: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+    .macro-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+    .macro-value { color: var(--text-secondary); font-size: 0.9rem; }
+
+    .sources-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+    .source-card { background: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; transition: all 0.3s ease; }
+    .source-card:hover { border-color: var(--accent); transform: translateX(4px); }
+    .source-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .source-name { font-weight: 600; color: var(--text-primary); }
+    .source-date { font-size: 0.85rem; color: var(--text-muted); }
+    .source-title { color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .source-link { color: var(--accent); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem; transition: all 0.2s ease; }
+    .source-link:hover { color: #60a5fa; gap: 0.5rem; }
+
+    .radar-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+    .radar-title { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+    .radar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .radar-category { background: var(--primary); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .radar-category-title { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .radar-list { list-style: none; }
+    .radar-item { padding: 0.75rem; background: var(--secondary); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+
+    .observacoes-section { background: var(--bg-card); border: 1px solid var(--warning); border-left: 4px solid var(--warning); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+    .observacoes-title { font-size: 1.1rem; font-weight: 600; color: var(--warning); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .observacoes-list { list-style: none; }
+    .observacao-item { padding: 0.75rem; background: var(--primary); border-radius: 6px; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+
+    .footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
+
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .header h1 { font-size: 1.5rem; }
+      .stat-value { font-size: 1.25rem; }
+      .headline-title { font-size: 1.25rem; }
+      .controls { flex-direction: column; }
+    }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="header-top">
-                <h1>🏦 BV Corporate Banking</h1>
-                <div class="header-badges">
-                    <div class="status-badge">
-                        <div class="status-dot" id="statusDot"></div>
-                        <span id="statusText">Carregando...</span>
-                    </div>
-                    <div class="run-label" id="runLabel">
-                        <span id="runIcon">☀️</span>
-                        <span id="runText">-</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-grid" id="statsGrid">
-                <div class="stat-card">
-                    <div class="stat-icon">📰</div>
-                    <div class="stat-label">Headlines</div>
-                    <div class="stat-value" id="statHeadlines">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🚨</div>
-                    <div class="stat-label">Alertas Críticos</div>
-                    <div class="stat-value" id="statCritical">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📊</div>
-                    <div class="stat-label">Fontes</div>
-                    <div class="stat-value" id="statSources">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🏷️</div>
-                    <div class="stat-label">Categorias</div>
-                    <div class="stat-value" id="statCategories">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-label">Última Atualização</div>
-                    <div class="stat-value" id="statTimestamp" style="font-size: 0.9rem;">-</div>
-                </div>
-            </div>
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <h1>🏦 BV Corporate Banking</h1>
+      <div class="header-badges">
+        <div class="status-badge">
+          <div class="status-dot" id="statusDot"></div>
+          <span id="statusText">Carregando...</span>
         </div>
-
-        <!-- CONTROLS -->
-const data = await response.json();
-const report = Array.isArray(data) ? data[0] : data;
-
-if (!report || typeof report !== 'object' || !report.generated_at) {
-  throw new Error('Relatório inválido (sem generated_at)');
-}
-
-console.log('🕒 generated_at recebido:', report.generated_at);
-
-// sempre sobrescreve cache
-localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
-
-currentReport = report;
-renderizarRelatorio(report);
-
-        <!-- FILTERS -->
-        <div class="filters" id="filtersSection" style="display: none;">
-            <div class="filter-label">🔍 Filtrar por Categoria</div>
-            <div class="filter-chips" id="filterChips">
-                <div class="filter-chip active" data-filter="all">Todas</div>
-                <div class="filter-chip" data-filter="corporate_intel">🏢 Corporate Intel</div>
-                <div class="filter-chip" data-filter="credit_risk">💰 Crédito & Risco</div>
-                <div class="filter-chip" data-filter="agro">🌾 Agronegócio</div>
-                <div class="filter-chip" data-filter="fx">💵 Câmbio</div>
-                <div class="filter-chip" data-filter="macro">📊 Macro</div>
-                <div class="filter-chip" data-filter="sectors">🏭 Setores</div>
-            </div>
+        <div class="run-label" id="runLabel">
+          <span id="runIcon">☀️</span>
+          <span id="runText">-</span>
         </div>
-
-        <!-- LOADING -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Buscando relatório atualizado...</p>
-        </div>
-
-        <!-- CRITICAL ALERTS -->
-        <div class="critical-alerts hidden" id="criticalAlerts">
-            <div class="critical-title">
-                <span class="critical-icon">🚨</span>
-                <span>Alertas Críticos - Ação Imediata</span>
-            </div>
-            <div id="criticalAlertsContent"></div>
-        </div>
-
-        <!-- HEADLINES -->
-        <div class="headlines-grid hidden" id="headlinesGrid"></div>
-
-        <!-- RADAR MACRO -->
-        <div class="radar-section hidden" id="radarSection">
-            <div class="radar-title">📡 Radar Macro</div>
-            <div class="radar-grid" id="radarGrid"></div>
-        </div>
-
-        <!-- OBSERVAÇÕES -->
-        <div class="observacoes-section hidden" id="observacoesSection"></div>
-
-        <!-- FOOTER -->
-        <div class="footer">
-            <p>BV Corporate Banking | Inteligência de Mercado</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem;">
-                Relatório gerado automaticamente | Atualizado 2x ao dia (9h e 17h)
-            </p>
-        </div>
+      </div>
     </div>
 
-    <script>
-        // ==================== CONFIGURAÇÃO ====================
-        const WEBHOOK_URL = 'https://primary-n8n.rzedd2.easypanel.host/webhook/news/latest';
-
-        const CONFIG = {
-            lastReportKey: 'bv_last_report',
-            updateInterval: 60000, // 1 minuto
-            autoUpdate: true
-        };
-
-        let currentFilter = 'all';
-        let currentReport = null;
-
-        // ==================== INICIALIZAÇÃO ====================
-        window.addEventListener('DOMContentLoaded', () => {
-            carregarUltimoRelatorio();
-            inicializarFiltros();
-            buscarRelatorio(); // tenta buscar na primeira carga
-
-            if (CONFIG.autoUpdate) {
-                setInterval(verificarAtualizacao, CONFIG.updateInterval);
-            }
-        });
-
-        // ==================== FUNÇÕES PRINCIPAIS ====================
-        function carregarUltimoRelatorio() {
-            const saved = localStorage.getItem(CONFIG.lastReportKey);
-            if (saved) {
-                try {
-                    const report = JSON.parse(saved);
-                    renderizarRelatorio(report);
-                    atualizarStatus('Cache carregado', 'success');
-                } catch (e) {
-                    console.error('Erro ao carregar cache:', e);
-                }
-            }
-        }
-
-        async function buscarRelatorio() {
-            const btnUpdate = document.getElementById('btnUpdate');
-            const statusDot = document.getElementById('statusDot');
-
-            btnUpdate.disabled = true;
-            btnUpdate.textContent = '⏳ Atualizando...';
-            statusDot.classList.add('loading');
-            atualizarStatus('Buscando relatório...', 'loading');
-
-            document.getElementById('loading').classList.add('active');
-
-            try {
-                // ✅ QUEBRA CACHE (GitHub Pages + Browser + CDN)
-                const url = `${WEBHOOK_URL}?ts=${Date.now()}`;
-                const response = await fetch(url, { cache: 'no-store' });
-
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const report = Array.isArray(data) ? data[0] : data;
-
-                // ✅ validação mínima do relatório
-                if (!report || typeof report !== 'object' || !report.generated_at) {
-                    throw new Error('Relatório inválido (sem generated_at)');
-                }
-
-                console.log('📅 generated_at recebido:', report.generated_at);
-
-                // ✅ só sobrescreve cache se for novo
-                const lastSaved = localStorage.getItem(CONFIG.lastReportKey);
-                if (lastSaved) {
-                    const prev = JSON.parse(lastSaved);
-                    if (prev && prev.generated_at === report.generated_at) {
-                        console.warn('Relatório igual ao cache. Mantendo cache.');
-                    } else {
-                        localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
-                    }
-                } else {
-                    localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
-                }
-
-                currentReport = report;
-                renderizarRelatorio(report);
-
-                atualizarStatus('Atualizado', 'success');
-                statusDot.classList.remove('loading', 'error');
-
-            } catch (error) {
-                console.error('Erro ao buscar relatório:', error);
-                atualizarStatus('Erro na atualização (usando cache)', 'error');
-
-                const statusDot = document.getElementById('statusDot');
-                statusDot.classList.remove('loading');
-                statusDot.classList.add('error');
-
-                // fallback pro cache
-                carregarUltimoRelatorio();
-
-            } finally {
-                document.getElementById('loading').classList.remove('active');
-                btnUpdate.disabled = false;
-                btnUpdate.textContent = '🔄 Atualizar Agora';
-            }
-        }
-
-        function atualizarStatus(text, type) {
-            const statusText = document.getElementById('statusText');
-            statusText.textContent = text;
-        }
-
-        function verificarAtualizacao() {
-            const now = new Date();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
-
-            if ((hour === 9 && minute >= 5 && minute <= 10) ||
-                (hour === 17 && minute >= 5 && minute <= 10)) {
-
-                const lastUpdate = localStorage.getItem('lastAutoUpdate');
-                const lastTime = lastUpdate ? new Date(lastUpdate) : null;
-
-                if (!lastTime || (now - lastTime) > 10 * 60 * 1000) {
-                    console.log('Auto-atualização iniciada');
-                    buscarRelatorio();
-                    localStorage.setItem('lastAutoUpdate', now.toISOString());
-                }
-            }
-        }
-
-        // ==================== RENDERIZAÇÃO ====================
-        function renderizarRelatorio(report) {
-            console.log('Renderizando relatório:', report);
-            atualizarHeader(report);
-            atualizarStats(report);
-
-            const criticalHeadlines = detectarAlertas(report);
-            if (criticalHeadlines.length > 0) {
-                renderizarAlertas(criticalHeadlines);
-            } else {
-                document.getElementById('criticalAlerts').classList.add('hidden');
-                document.getElementById('criticalAlertsContent').innerHTML = '';
-            }
-
-            renderizarHeadlines(report.top_headlines || []);
-
-            if (report.radar_macro) {
-                renderizarRadarMacro(report.radar_macro);
-            } else {
-                document.getElementById('radarSection').classList.add('hidden');
-                document.getElementById('radarGrid').innerHTML = '';
-            }
-
-            if (report.observacoes && report.observacoes.length > 0) {
-                renderizarObservacoes(report.observacoes);
-            } else {
-                document.getElementById('observacoesSection').classList.add('hidden');
-                document.getElementById('observacoesSection').innerHTML = '';
-            }
-
-            document.getElementById('filtersSection').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function atualizarHeader(report) {
-            const runLabel = document.getElementById('runLabel');
-            const runIcon = document.getElementById('runIcon');
-            const runText = document.getElementById('runText');
-
-            if (report.run_label === 'morning') {
-                runLabel.className = 'run-label morning';
-                runIcon.textContent = '☀️';
-                runText.textContent = 'Morning Briefing';
-            } else {
-                runLabel.className = 'run-label night';
-                runIcon.textContent = '🌙';
-                runText.textContent = 'Evening Report';
-            }
-        }
-
-        function atualizarStats(report) {
-            const headlines = report.top_headlines || [];
-            const metadata = report.metadata || {};
-
-            document.getElementById('statHeadlines').textContent = headlines.length;
-            document.getElementById('statCritical').textContent = detectarAlertas(report).length;
-            document.getElementById('statSources').textContent = metadata.total_fontes || calcularFontes(headlines);
-            document.getElementById('statCategories').textContent = metadata.categorias_presentes?.length || detectarCategorias(headlines).size;
-
-            const timestamp = report.generated_at
-                ? new Date(report.generated_at).toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
-                : '-';
-
-            document.getElementById('statTimestamp').textContent = timestamp;
-        }
-
-        function detectarAlertas(report) {
-            const headlines = report.top_headlines || [];
-            return headlines.filter(h => {
-                const hasRisks = h.riscos_red_flags && h.riscos_red_flags.length > 0;
-                const tema = (h.tema || '').toLowerCase();
-                const critical = tema.includes('recuperação judicial') || tema.includes('default') || tema.includes('calote') || tema.includes(' rj');
-                return hasRisks || critical;
-            });
-        }
-
-        function detectarCategorias(headlines) {
-            const categorias = new Set();
-            headlines.forEach(h => {
-                const tema = (h.tema || '').toLowerCase();
-                if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) categorias.add('corporate_intel');
-                if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) categorias.add('credit_risk');
-                if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) categorias.add('agro');
-                if (tema.includes('câmbio') || tema.includes('dólar')) categorias.add('fx');
-                if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) categorias.add('macro');
-            });
-            return categorias;
-        }
-
-        function calcularFontes(headlines) {
-            let total = 0;
-            headlines.forEach(h => {
-                if (h.fontes && Array.isArray(h.fontes)) total += h.fontes.length;
-            });
-            return total;
-        }
-
-        function renderizarAlertas(criticalHeadlines) {
-            const container = document.getElementById('criticalAlertsContent');
-            const section = document.getElementById('criticalAlerts');
-
-            let html = '';
-            criticalHeadlines.forEach(headline => {
-                html += `
-                    <div class="alert-item">
-                        <div class="alert-header">${headline.tema}</div>
-                        <div class="alert-body">${headline.resumo}</div>
-                        ${headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0 ? `
-                            <div class="alert-actions">
-                                ${headline.oportunidades_para_banker.map(op => `<span class="action-tag">💡 ${op}</span>`).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            section.classList.remove('hidden');
-        }
-
-        function renderizarHeadlines(headlines) {
-            const container = document.getElementById('headlinesGrid');
-            container.innerHTML = '';
-
-            headlines.forEach((headline, index) => {
-                const card = document.createElement('div');
-                card.className = 'headline-card';
-                card.dataset.index = index;
-                card.dataset.category = detectarCategoriaHeadline(headline);
-
-                let priorityClass = 'priority-low';
-                let priorityText = 'BAIXA';
-
-                if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
-                    priorityClass = 'priority-critical';
-                    priorityText = 'CRÍTICO';
-                } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 2) {
-                    priorityClass = 'priority-high';
-                    priorityText = 'ALTA';
-                } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
-                    priorityClass = 'priority-medium';
-                    priorityText = 'MÉDIA';
-                }
-
-                let html = `
-                    <div class="headline-header">
-                        <div class="headline-title">${headline.tema}</div>
-                        <div class="priority-badge ${priorityClass}">${priorityText}</div>
-                    </div>
-                    <div class="headline-resumo">${headline.resumo}</div>
-                `;
-
-                if (headline.sensibilidade_macro) {
-                    html += `
-                        <div class="section">
-                            <div class="section-title">📊 Sensibilidade Macro</div>
-                            <div class="macro-grid">
-                                <div class="macro-item"><div class="macro-label">Inflação</div><div class="macro-value">${headline.sensibilidade_macro.inflacao}</div></div>
-                                <div class="macro-item"><div class="macro-label">Juros</div><div class="macro-value">${headline.sensibilidade_macro.juros}</div></div>
-                                <div class="macro-item"><div class="macro-label">Câmbio</div><div class="macro-value">${headline.sensibilidade_macro.cambio}</div></div>
-                                <div class="macro-item"><div class="macro-label">Atividade</div><div class="macro-value">${headline.sensibilidade_macro.atividade}</div></div>
-                                <div class="macro-item"><div class="macro-label">Crédito/Spreads</div><div class="macro-value">${headline.sensibilidade_macro.credito_spreads}</div></div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                if (headline.setores_mais_afetados && headline.setores_mais_afetados.length > 0) {
-                    html += `
-                        <div class="section">
-                            <div class="section-title">🏭 Setores Mais Afetados</div>
-                            <ul class="list">
-                                ${headline.setores_mais_afetados.map(setor => `<li class="list-item">${setor}</li>`).join('')}
-                            </ul>
-                        </div>
-                    `;
-                }
-
-                if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
-                    html += `
-                        <div class="section">
-                            <div class="section-title">💡 Oportunidades para Banker</div>
-                            <ul class="list">
-                                ${headline.oportunidades_para_banker.map(op => `<li class="list-item opportunity">${op}</li>`).join('')}
-                            </ul>
-                        </div>
-                    `;
-                }
-
-                if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
-                    html += `
-                        <div class="section">
-                            <div class="section-title">⚠️ Riscos e Red Flags</div>
-                            <ul class="list">
-                                ${headline.riscos_red_flags.map(risco => `<li class="list-item risk">${risco}</li>`).join('')}
-                            </ul>
-                        </div>
-                    `;
-                }
-
-                if (headline.fontes && headline.fontes.length > 0) {
-                    html += `
-                        <div class="section">
-                            <div class="section-title">📰 Fontes</div>
-                            <div class="sources-grid">
-                                ${headline.fontes.map(fonte => `
-                                    <div class="source-card">
-                                        <div class="source-header">
-                                            <span class="source-name">${fonte.fonte}</span>
-                                            <span class="source-date">${fonte.data || 'N/A'}</span>
-                                        </div>
-                                        <div class="source-title">${fonte.titulo}</div>
-                                        ${fonte.link && fonte.link !== 'não informado' ? `
-                                            <a href="${fonte.link}" target="_blank" class="source-link">
-                                                Ler notícia completa →
-                                            </a>
-                                        ` : ''}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-
-                card.innerHTML = html;
-                container.appendChild(card);
-            });
-
-            container.classList.remove('hidden');
-            aplicarFiltro(currentFilter);
-        }
-
-        function detectarCategoriaHeadline(headline) {
-            const tema = (headline.tema || '').toLowerCase();
-            if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) return 'corporate_intel';
-            if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) return 'credit_risk';
-            if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) return 'agro';
-            if (tema.includes('câmbio') || tema.includes('dólar')) return 'fx';
-            if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) return 'macro';
-            if (tema.includes('energia') || tema.includes('infraestrutura') || tema.includes('varejo')) return 'sectors';
-            return 'other';
-        }
-
-        function renderizarRadarMacro(radar) {
-            const container = document.getElementById('radarGrid');
-            const section = document.getElementById('radarSection');
-            container.innerHTML = '';
-
-            const categories = {
-                'commodities': '📦 Commodities',
-                'juros_politica_monetaria': '💰 Juros e Política Monetária',
-                'cambio_risco': '💱 Câmbio e Risco',
-                'atividade_setorial': '🏢 Atividade Setorial'
-            };
-
-            let hasContent = false;
-
-            Object.entries(categories).forEach(([key, title]) => {
-                if (radar[key] && radar[key].length > 0) {
-                    hasContent = true;
-                    const categoryDiv = document.createElement('div');
-                    categoryDiv.className = 'radar-category';
-                    categoryDiv.innerHTML = `
-                        <div class="radar-category-title">${title}</div>
-                        <ul class="radar-list">
-                            ${radar[key].map(item => `<li class="radar-item">${item}</li>`).join('')}
-                        </ul>
-                    `;
-                    container.appendChild(categoryDiv);
-                }
-            });
-
-            if (hasContent) section.classList.remove('hidden');
-        }
-
-        function renderizarObservacoes(observacoes) {
-            const section = document.getElementById('observacoesSection');
-            section.innerHTML = `
-                <div class="observacoes-title">⚠️ Observações Metodológicas</div>
-                <ul class="observacoes-list">
-                    ${observacoes.map(obs => `<li class="observacao-item">${obs}</li>`).join('')}
-                </ul>
-            `;
-            section.classList.remove('hidden');
-        }
-
-        // ==================== FILTROS ====================
-        function inicializarFiltros() {
-            const chips = document.querySelectorAll('.filter-chip');
-            chips.forEach(chip => {
-                chip.addEventListener('click', () => {
-                    chips.forEach(c => c.classList.remove('active'));
-                    chip.classList.add('active');
-                    currentFilter = chip.dataset.filter;
-                    aplicarFiltro(currentFilter);
-                });
-            });
-        }
-
-        function aplicarFiltro(filter) {
-            const cards = document.querySelectorAll('.headline-card');
-            cards.forEach(card => {
-                if (filter === 'all') {
-                    card.style.display = 'block';
-                } else {
-                    const category = card.dataset.category;
-                    card.style.display = category === filter ? 'block' : 'none';
-                }
-            });
-        }
-
-        function limparCache() {
-            if (confirm('Deseja limpar o cache local? O relatório será recarregado do servidor.')) {
-                localStorage.removeItem(CONFIG.lastReportKey);
-                localStorage.removeItem('lastAutoUpdate');
-                buscarRelatorio();
-            }
-        }
-    </script>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-icon">📰</div>
+        <div class="stat-label">Headlines</div>
+        <div class="stat-value" id="statHeadlines">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🚨</div>
+        <div class="stat-label">Alertas Críticos</div>
+        <div class="stat-value" id="statCritical">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-label">Fontes</div>
+        <div class="stat-value" id="statSources">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏷️</div>
+        <div class="stat-label">Categorias</div>
+        <div class="stat-value" id="statCategories">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-label">Última Atualização</div>
+        <div class="stat-value" id="statTimestamp" style="font-size: 0.9rem;">-</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="btn btn-primary" onclick="buscarRelatorio()" id="btnUpdate">
+      🔄 Atualizar Agora
+    </button>
+    <button class="btn btn-secondary" onclick="limparCache()">
+      🗑️ Limpar Cache
+    </button>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters" id="filtersSection" style="display: none;">
+    <div class="filter-label">🔍 Filtrar por Categoria</div>
+    <div class="filter-chips" id="filterChips">
+      <div class="filter-chip active" data-filter="all">Todas</div>
+      <div class="filter-chip" data-filter="corporate_intel">🏢 Corporate Intel</div>
+      <div class="filter-chip" data-filter="credit_risk">💰 Crédito & Risco</div>
+      <div class="filter-chip" data-filter="agro">🌾 Agronegócio</div>
+      <div class="filter-chip" data-filter="fx">💵 Câmbio</div>
+      <div class="filter-chip" data-filter="macro">📊 Macro</div>
+      <div class="filter-chip" data-filter="sectors">🏭 Setores</div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Buscando relatório atualizado...</p>
+  </div>
+
+  <!-- CRITICAL ALERTS -->
+  <div class="critical-alerts hidden" id="criticalAlerts">
+    <div class="critical-title">
+      <span class="critical-icon">🚨</span>
+      <span>Alertas Críticos - Ação Imediata</span>
+    </div>
+    <div id="criticalAlertsContent"></div>
+  </div>
+
+  <!-- HEADLINES -->
+  <div class="headlines-grid hidden" id="headlinesGrid"></div>
+
+  <!-- RADAR MACRO -->
+  <div class="radar-section hidden" id="radarSection">
+    <div class="radar-title">📡 Radar Macro</div>
+    <div class="radar-grid" id="radarGrid"></div>
+  </div>
+
+  <!-- OBSERVAÇÕES -->
+  <div class="observacoes-section hidden" id="observacoesSection"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>BV Corporate Banking | Inteligência de Mercado</p>
+    <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+      Relatório gerado automaticamente | Atualizado 2x ao dia (9h e 17h)
+    </p>
+  </div>
+</div>
+
+<script>
+  // ==================== CONFIGURAÇÃO ====================
+  const WEBHOOK_URL = 'https://primary-n8n.rzedd2.easypanel.host/webhook/news/latest';
+
+  const CONFIG = {
+    lastReportKey: 'bv_last_report',
+    updateInterval: 60000, // 1 minuto
+    autoUpdate: true
+  };
+
+  let currentFilter = 'all';
+  let currentReport = null;
+
+  // ==================== INICIALIZAÇÃO ====================
+  window.addEventListener('DOMContentLoaded', () => {
+    carregarUltimoRelatorio();
+    inicializarFiltros();
+    buscarRelatorio(); // tenta buscar na primeira carga
+
+    if (CONFIG.autoUpdate) {
+      setInterval(verificarAtualizacao, CONFIG.updateInterval);
+    }
+  });
+
+  // ==================== FUNÇÕES PRINCIPAIS ====================
+  function carregarUltimoRelatorio() {
+    const saved = localStorage.getItem(CONFIG.lastReportKey);
+    if (saved) {
+      try {
+        const report = JSON.parse(saved);
+        renderizarRelatorio(report);
+        atualizarStatus('Cache carregado', 'success');
+      } catch (e) {
+        console.error('Erro ao carregar cache:', e);
+      }
+    }
+  }
+
+  async function buscarRelatorio() {
+    const btnUpdate = document.getElementById('btnUpdate');
+    const statusDot = document.getElementById('statusDot');
+
+    btnUpdate.disabled = true;
+    btnUpdate.textContent = '⏳ Atualizando...';
+    statusDot.classList.add('loading');
+    atualizarStatus('Buscando relatório...', 'loading');
+    document.getElementById('loading').classList.add('active');
+
+    try {
+      // ✅ quebra cache de browser/CDN
+      const url = `${WEBHOOK_URL}?ts=${Date.now()}`;
+      const response = await fetch(url, { cache: 'no-store' });
+
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+      const data = await response.json();
+      const report = Array.isArray(data) ? data[0] : data;
+
+      if (!report || typeof report !== 'object' || !report.generated_at) {
+        throw new Error('Relatório inválido (sem generated_at)');
+      }
+
+      console.log('🕒 generated_at recebido:', report.generated_at);
+
+      // ✅ sempre sobrescreve cache (sem comparação)
+      localStorage.setItem(CONFIG.lastReportKey, JSON.stringify(report));
+      currentReport = report;
+
+      renderizarRelatorio(report);
+      atualizarStatus('Atualizado', 'success');
+      statusDot.classList.remove('loading', 'error');
+
+    } catch (error) {
+      console.error('Erro ao buscar relatório:', error);
+      atualizarStatus('Erro na atualização (usando cache)', 'error');
+      statusDot.classList.remove('loading');
+      statusDot.classList.add('error');
+      carregarUltimoRelatorio();
+
+    } finally {
+      document.getElementById('loading').classList.remove('active');
+      btnUpdate.disabled = false;
+      btnUpdate.textContent = '🔄 Atualizar Agora';
+    }
+  }
+
+  function atualizarStatus(text, type) {
+    const statusText = document.getElementById('statusText');
+    statusText.textContent = text;
+  }
+
+  function verificarAtualizacao() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+
+    if ((hour === 9 && minute >= 5 && minute <= 10) ||
+        (hour === 17 && minute >= 5 && minute <= 10)) {
+
+      const lastUpdate = localStorage.getItem('lastAutoUpdate');
+      const lastTime = lastUpdate ? new Date(lastUpdate) : null;
+
+      if (!lastTime || (now - lastTime) > 10 * 60 * 1000) {
+        buscarRelatorio();
+        localStorage.setItem('lastAutoUpdate', now.toISOString());
+      }
+    }
+  }
+
+  // ==================== RENDERIZAÇÃO ====================
+  function renderizarRelatorio(report) {
+    console.log('Renderizando relatório:', report);
+
+    atualizarHeader(report);
+    atualizarStats(report);
+
+    const criticalHeadlines = detectarAlertas(report);
+    if (criticalHeadlines.length > 0) {
+      renderizarAlertas(criticalHeadlines);
+    } else {
+      document.getElementById('criticalAlerts').classList.add('hidden');
+      document.getElementById('criticalAlertsContent').innerHTML = '';
+    }
+
+    renderizarHeadlines(report.top_headlines || []);
+
+    if (report.radar_macro) {
+      renderizarRadarMacro(report.radar_macro);
+    } else {
+      document.getElementById('radarSection').classList.add('hidden');
+      document.getElementById('radarGrid').innerHTML = '';
+    }
+
+    if (report.observacoes && report.observacoes.length > 0) {
+      renderizarObservacoes(report.observacoes);
+    } else {
+      document.getElementById('observacoesSection').classList.add('hidden');
+      document.getElementById('observacoesSection').innerHTML = '';
+    }
+
+    document.getElementById('filtersSection').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function atualizarHeader(report) {
+    const runLabel = document.getElementById('runLabel');
+    const runIcon = document.getElementById('runIcon');
+    const runText = document.getElementById('runText');
+
+    if (report.run_label === 'morning') {
+      runLabel.className = 'run-label morning';
+      runIcon.textContent = '☀️';
+      runText.textContent = 'Morning Briefing';
+    } else {
+      runLabel.className = 'run-label night';
+      runIcon.textContent = '🌙';
+      runText.textContent = 'Evening Report';
+    }
+  }
+
+  function atualizarStats(report) {
+    const headlines = report.top_headlines || [];
+    const metadata = report.metadata || {};
+
+    document.getElementById('statHeadlines').textContent = headlines.length;
+    document.getElementById('statCritical').textContent = detectarAlertas(report).length;
+    document.getElementById('statSources').textContent = metadata.total_fontes || calcularFontes(headlines);
+    document.getElementById('statCategories').textContent = metadata.categorias_presentes?.length || detectarCategorias(headlines).size;
+
+    const timestamp = report.generated_at
+      ? new Date(report.generated_at).toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
+      : '-';
+
+    document.getElementById('statTimestamp').textContent = timestamp;
+  }
+
+  function detectarAlertas(report) {
+    const headlines = report.top_headlines || [];
+    return headlines.filter(h => {
+      const hasRisks = h.riscos_red_flags && h.riscos_red_flags.length > 0;
+      const tema = (h.tema || '').toLowerCase();
+      const critical = tema.includes('recuperação judicial') || tema.includes('default') || tema.includes('calote') || tema.includes(' rj');
+      return hasRisks || critical;
+    });
+  }
+
+  function detectarCategorias(headlines) {
+    const categorias = new Set();
+    headlines.forEach(h => {
+      const tema = (h.tema || '').toLowerCase();
+      if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) categorias.add('corporate_intel');
+      if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) categorias.add('credit_risk');
+      if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) categorias.add('agro');
+      if (tema.includes('câmbio') || tema.includes('dólar')) categorias.add('fx');
+      if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) categorias.add('macro');
+    });
+    return categorias;
+  }
+
+  function calcularFontes(headlines) {
+    let total = 0;
+    headlines.forEach(h => {
+      if (h.fontes && Array.isArray(h.fontes)) total += h.fontes.length;
+    });
+    return total;
+  }
+
+  function renderizarAlertas(criticalHeadlines) {
+    const container = document.getElementById('criticalAlertsContent');
+    const section = document.getElementById('criticalAlerts');
+
+    let html = '';
+    criticalHeadlines.forEach(headline => {
+      html += `
+        <div class="alert-item">
+          <div class="alert-header">${headline.tema}</div>
+          <div class="alert-body">${headline.resumo}</div>
+          ${headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0 ? `
+            <div class="alert-actions">
+              ${headline.oportunidades_para_banker.map(op => `<span class="action-tag">💡 ${op}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+    section.classList.remove('hidden');
+  }
+
+  function renderizarHeadlines(headlines) {
+    const container = document.getElementById('headlinesGrid');
+    container.innerHTML = '';
+
+    headlines.forEach((headline, index) => {
+      const card = document.createElement('div');
+      card.className = 'headline-card';
+      card.dataset.index = index;
+      card.dataset.category = detectarCategoriaHeadline(headline);
+
+      let priorityClass = 'priority-low';
+      let priorityText = 'BAIXA';
+
+      if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
+        priorityClass = 'priority-critical';
+        priorityText = 'CRÍTICO';
+      } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 2) {
+        priorityClass = 'priority-high';
+        priorityText = 'ALTA';
+      } else if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
+        priorityClass = 'priority-medium';
+        priorityText = 'MÉDIA';
+      }
+
+      let html = `
+        <div class="headline-header">
+          <div class="headline-title">${headline.tema}</div>
+          <div class="priority-badge ${priorityClass}">${priorityText}</div>
+        </div>
+        <div class="headline-resumo">${headline.resumo}</div>
+      `;
+
+      if (headline.sensibilidade_macro) {
+        html += `
+          <div class="section">
+            <div class="section-title">📊 Sensibilidade Macro</div>
+            <div class="macro-grid">
+              <div class="macro-item"><div class="macro-label">Inflação</div><div class="macro-value">${headline.sensibilidade_macro.inflacao}</div></div>
+              <div class="macro-item"><div class="macro-label">Juros</div><div class="macro-value">${headline.sensibilidade_macro.juros}</div></div>
+              <div class="macro-item"><div class="macro-label">Câmbio</div><div class="macro-value">${headline.sensibilidade_macro.cambio}</div></div>
+              <div class="macro-item"><div class="macro-label">Atividade</div><div class="macro-value">${headline.sensibilidade_macro.atividade}</div></div>
+              <div class="macro-item"><div class="macro-label">Crédito/Spreads</div><div class="macro-value">${headline.sensibilidade_macro.credito_spreads}</div></div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (headline.setores_mais_afetados && headline.setores_mais_afetados.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-title">🏭 Setores Mais Afetados</div>
+            <ul class="list">
+              ${headline.setores_mais_afetados.map(setor => `<li class="list-item">${setor}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      if (headline.oportunidades_para_banker && headline.oportunidades_para_banker.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-title">💡 Oportunidades para Banker</div>
+            <ul class="list">
+              ${headline.oportunidades_para_banker.map(op => `<li class="list-item opportunity">${op}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      if (headline.riscos_red_flags && headline.riscos_red_flags.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-title">⚠️ Riscos e Red Flags</div>
+            <ul class="list">
+              ${headline.riscos_red_flags.map(risco => `<li class="list-item risk">${risco}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      if (headline.fontes && headline.fontes.length > 0) {
+        html += `
+          <div class="section">
+            <div class="section-title">📰 Fontes</div>
+            <div class="sources-grid">
+              ${headline.fontes.map(fonte => `
+                <div class="source-card">
+                  <div class="source-header">
+                    <span class="source-name">${fonte.fonte}</span>
+                    <span class="source-date">${fonte.data || 'N/A'}</span>
+                  </div>
+                  <div class="source-title">${fonte.titulo}</div>
+                  ${fonte.link && fonte.link !== 'não informado' ? `
+                    <a href="${fonte.link}" target="_blank" class="source-link">Ler notícia completa →</a>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      card.innerHTML = html;
+      container.appendChild(card);
+    });
+
+    container.classList.remove('hidden');
+    aplicarFiltro(currentFilter);
+  }
+
+  function detectarCategoriaHeadline(headline) {
+    const tema = (headline.tema || '').toLowerCase();
+    if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) return 'corporate_intel';
+    if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) return 'credit_risk';
+    if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) return 'agro';
+    if (tema.includes('câmbio') || tema.includes('dólar')) return 'fx';
+    if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) return 'macro';
+    if (tema.includes('energia') || tema.includes('infraestrutura') || tema.includes('varejo')) return 'sectors';
+    return 'other';
+  }
+
+  function renderizarRadarMacro(radar) {
+    const container = document.getElementById('radarGrid');
+    const section = document.getElementById('radarSection');
+    container.innerHTML = '';
+
+    const categories = {
+      'commodities': '📦 Commodities',
+      'juros_politica_monetaria': '💰 Juros e Política Monetária',
+      'cambio_risco': '💱 Câmbio e Risco',
+      'atividade_setorial': '🏢 Atividade Setorial'
+    };
+
+    let hasContent = false;
+
+    Object.entries(categories).forEach(([key, title]) => {
+      if (radar[key] && radar[key].length > 0) {
+        hasContent = true;
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'radar-category';
+        categoryDiv.innerHTML = `
+          <div class="radar-category-title">${title}</div>
+          <ul class="radar-list">
+            ${radar[key].map(item => `<li class="radar-item">${item}</li>`).join('')}
+          </ul>
+        `;
+        container.appendChild(categoryDiv);
+      }
+    });
+
+    if (hasContent) section.classList.remove('hidden');
+    else section.classList.add('hidden');
+  }
+
+  function renderizarObservacoes(observacoes) {
+    const section = document.getElementById('observacoesSection');
+    section.innerHTML = `
+      <div class="observacoes-title">⚠️ Observações Metodológicas</div>
+      <ul class="observacoes-list">
+        ${observacoes.map(obs => `<li class="observacao-item">${obs}</li>`).join('')}
+      </ul>
+    `;
+    section.classList.remove('hidden');
+  }
+
+  // ==================== FILTROS ====================
+  function inicializarFiltros() {
+    const chips = document.querySelectorAll('.filter-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.dataset.filter;
+        aplicarFiltro(currentFilter);
+      });
+    });
+  }
+
+  function aplicarFiltro(filter) {
+    const cards = document.querySelectorAll('.headline-card');
+    cards.forEach(card => {
+      if (filter === 'all') card.style.display = 'block';
+      else card.style.display = (card.dataset.category === filter) ? 'block' : 'none';
+    });
+  }
+
+  function limparCache() {
+    if (confirm('Deseja limpar o cache local? O relatório será recarregado do servidor.')) {
+      localStorage.removeItem(CONFIG.lastReportKey);
+      localStorage.removeItem('lastAutoUpdate');
+      buscarRelatorio();
+    }
+  }
+</script>
 </body>
 </html>
