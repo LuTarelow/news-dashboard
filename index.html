@@ -141,7 +141,7 @@
       border-radius: 12px;
       padding: 1rem;
       transition: all 0.3s ease;
-      cursor: pointer; /* clickable */
+      cursor: pointer;
       user-select: none;
     }
 
@@ -464,7 +464,7 @@
     <!-- FILTERS -->
     <div class="filters" id="filtersSection">
       <div class="filter-label">🔍 Filtrar por Categoria</div>
-     <div class="filter-chips" id="filterChips">
+      <div class="filter-chips" id="filterChips">
         <div class="filter-chip active" data-filter="all">Todas</div>
         <div class="filter-chip" data-filter="corporate_finance">🏢 Corporate Finance</div>
         <div class="filter-chip" data-filter="credit_structured">📉 Crédito Estruturado</div>
@@ -519,7 +519,7 @@
     const WEBHOOK_URL = 'https://primary-n8n.rzedd2.easypanel.host/webhook/news/latest';
 
     // MUDE ESTE VALOR A CADA DEPLOY (pra você confirmar que o GitHub atualizou)
-    const FRONTEND_VERSION = '2026-01-30 v3.1';
+    const FRONTEND_VERSION = '2026-01-31 v3.2';
 
     const CONFIG = {
       lastReportKey: 'bv_last_report',
@@ -734,7 +734,7 @@
       });
     }
 
-   function detectarCategorias(headlines) {
+    function detectarCategorias(headlines) {
       const categorias = new Set();
       headlines.forEach(h => {
         categorias.add(detectarCategoriaHeadline(h));
@@ -743,7 +743,11 @@
     }
 
     function detectarCategoriaHeadline(headline) {
-      const text = ((headline.tema || '') + " " + (headline.resumo || '')).toLowerCase();
+      const text = (
+        (headline.tema || '') + " " + 
+        (headline.resumo || '') + " " + 
+        (headline.setores_mais_afetados || []).join(" ")
+      ).toLowerCase();
 
       // 1. Corporate Finance (M&A, IPO)
       if (text.includes('m&a') || text.includes('aquisição') || text.includes('ipo') || text.includes('fusão')) return 'corporate_finance';
@@ -911,6 +915,7 @@
       });
 
       container.classList.remove('hidden');
+    }
 
     function renderizarRadarMacro(radar) {
       const container = document.getElementById('radarGrid');
@@ -1053,7 +1058,7 @@
       if (showAll || view === 'observacoes') mostrarSecao('observacoesSection');
       else esconderSecao('observacoesSection');
 
-      // Filters: se clicar “Categorias” (view=filters), só rola pra filtros, mas mantém all
+      // Filters: se clicar "Categorias" (view=filters), só rola pra filtros, mas mantém all
       if (view === 'filters') {
         // mantém tudo visível
         mostrarSecao('headlinesGrid');
