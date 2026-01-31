@@ -464,14 +464,16 @@
     <!-- FILTERS -->
     <div class="filters" id="filtersSection">
       <div class="filter-label">🔍 Filtrar por Categoria</div>
-      <div class="filter-chips" id="filterChips">
+     <div class="filter-chips" id="filterChips">
         <div class="filter-chip active" data-filter="all">Todas</div>
-        <div class="filter-chip" data-filter="corporate_intel">🏢 Corporate Intel</div>
-        <div class="filter-chip" data-filter="credit_risk">💰 Crédito & Risco</div>
-        <div class="filter-chip" data-filter="agro">🌾 Agronegócio</div>
-        <div class="filter-chip" data-filter="fx">💵 Câmbio</div>
-        <div class="filter-chip" data-filter="macro">📊 Macro</div>
-        <div class="filter-chip" data-filter="sectors">🏭 Setores</div>
+        <div class="filter-chip" data-filter="corporate_finance">🏢 Corporate Finance</div>
+        <div class="filter-chip" data-filter="credit_structured">📉 Crédito Estruturado</div>
+        <div class="filter-chip" data-filter="agro_industry">🌾 Agro & Indústria</div>
+        <div class="filter-chip" data-filter="infra_logistics">🏗️ Infra & Logística</div>
+        <div class="filter-chip" data-filter="auto_industrial">🚗 Automotivo</div>
+        <div class="filter-chip" data-filter="energy_utilities">⚡ Energia & Gás</div>
+        <div class="filter-chip" data-filter="treasury_macro">💰 Tesouraria & Macro</div>
+        <div class="filter-chip" data-filter="services_health_edu">🏥 Serviços/Saúde</div>
       </div>
     </div>
 
@@ -732,17 +734,42 @@
       });
     }
 
-    function detectarCategorias(headlines) {
+   function detectarCategorias(headlines) {
       const categorias = new Set();
       headlines.forEach(h => {
-        const tema = (h.tema || '').toLowerCase();
-        if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) categorias.add('corporate_intel');
-        if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) categorias.add('credit_risk');
-        if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) categorias.add('agro');
-        if (tema.includes('câmbio') || tema.includes('dólar')) categorias.add('fx');
-        if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) categorias.add('macro');
+        categorias.add(detectarCategoriaHeadline(h));
       });
       return categorias;
+    }
+
+    function detectarCategoriaHeadline(headline) {
+      const text = ((headline.tema || '') + " " + (headline.resumo || '')).toLowerCase();
+
+      // 1. Corporate Finance (M&A, IPO)
+      if (text.includes('m&a') || text.includes('aquisição') || text.includes('ipo') || text.includes('fusão')) return 'corporate_finance';
+      
+      // 2. Crédito Estruturado (Onde estão os CRAs/CRIs/FIDCs)
+      if (text.includes('debênture') || text.includes('cra') || text.includes('cri') || text.includes('fidc') || text.includes('securitização')) return 'credit_structured';
+      
+      // 3. Agro & Indústria (Usinas, Etanol, Commodities)
+      if (text.includes('agro') || text.includes('safra') || text.includes('usina') || text.includes('etanol') || text.includes('boi')) return 'agro_industry';
+      
+      // 4. Infraestrutura & Logística (Concessões e Transportes)
+      if (text.includes('ferrovia') || text.includes('porto') || text.includes('saneamento') || text.includes('logística') || text.includes('antt')) return 'infra_logistics';
+      
+      // 5. Automobilístico & Indústria (Montadoras e ANFavea)
+      if (text.includes('automobilístico') || text.includes('veículo') || text.includes('montadora') || text.includes('anfavea')) return 'auto_industrial';
+      
+      // 6. Energia & Utilities (Elétrica, Petróleo e Gás)
+      if (text.includes('energia') || text.includes('elétrica') || text.includes('petróleo') || text.includes('óleo') || text.includes('gás')) return 'energy_utilities';
+      
+      // 7. Tesouraria & Macro (Câmbio e Juros)
+      if (text.includes('selic') || text.includes('juros') || text.includes('inflação') || text.includes('câmbio') || text.includes('dólar')) return 'treasury_macro';
+
+      // 8. Serviços, Saúde e Educação
+      if (text.includes('saúde') || text.includes('hospital') || text.includes('educação')) return 'services_health_edu';
+
+      return 'other';
     }
 
     function calcularFontes(headlines) {
@@ -884,18 +911,6 @@
       });
 
       container.classList.remove('hidden');
-    }
-
-    function detectarCategoriaHeadline(headline) {
-      const tema = (headline.tema || '').toLowerCase();
-      if (tema.includes('m&a') || tema.includes('aquisição') || tema.includes('ipo')) return 'corporate_intel';
-      if (tema.includes('rating') || tema.includes('spread') || tema.includes('crédito')) return 'credit_risk';
-      if (tema.includes('agro') || tema.includes('safra') || tema.includes('commodity')) return 'agro';
-      if (tema.includes('câmbio') || tema.includes('dólar')) return 'fx';
-      if (tema.includes('selic') || tema.includes('juros') || tema.includes('inflação')) return 'macro';
-      if (tema.includes('energia') || tema.includes('infraestrutura') || tema.includes('varejo')) return 'sectors';
-      return 'other';
-    }
 
     function renderizarRadarMacro(radar) {
       const container = document.getElementById('radarGrid');
